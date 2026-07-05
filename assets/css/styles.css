@@ -570,18 +570,18 @@ ul { list-style: none; padding: 0; }
 }
 
 /* knowledge & skills — wrapped in a card ("window") to match the other report sections */
-.sr-ks { margin-bottom: 26px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); padding: 22px 26px; }
+.sr-ks { margin-bottom: 26px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); padding: 22px 26px; width: fit-content; max-width: 100%; }
 .sr-ks-title { font-size: 1.05rem; font-weight: 800; letter-spacing: .03em; margin: 0 0 4px; }
 .sr-ks-sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
-.sr-ks-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px 48px; max-width: 960px; }
-@media (max-width: 820px) { .sr-ks-grid { grid-template-columns: 1fr; } }
+.sr-ks-grid { display: grid; grid-template-columns: max-content max-content; gap: 28px 56px; }
+@media (max-width: 820px) { .sr-ks { width: auto; } .sr-ks-grid { grid-template-columns: 1fr; } }
 .sr-ks-h { font-size: 1.05rem; font-weight: 800; margin-bottom: 14px; }
 .sr-dom { margin-bottom: 16px; }
 .sr-dom-name { font-weight: 700; }
 .sr-dom-meta { font-size: .82rem; color: var(--muted); margin: 1px 0 7px; }
 /* one box per question, all on ONE line (no ragged wrapping) + the count at the end */
-.sr-boxes { display: flex; align-items: center; gap: 5px; flex-wrap: nowrap; }
-.sr-box { width: 22px; height: 14px; border: 1.5px solid var(--ink); border-radius: 3px; background: transparent; flex: 0 0 auto; }
+.sr-boxes { display: flex; align-items: center; gap: 7px; flex-wrap: nowrap; }
+.sr-box { width: 20px; height: 14px; border: 1.5px solid var(--ink); border-radius: 3px; background: transparent; flex: 0 0 auto; }
 .sr-box.fill { background: var(--ink); }
 .sr-dom-frac { font-size: .8rem; font-weight: 700; color: var(--muted); margin-left: 6px; flex: 0 0 auto; white-space: nowrap; }
 .sr-dom-none { font-size: .82rem; color: var(--faint); }
