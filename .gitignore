@@ -1,0 +1,9 @@
+# Build scratch & local tooling — NOT part of the published website
+tmp/
+.claude/
+*.bak
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+node_modules/
