@@ -24,13 +24,13 @@ Apex.bank.register({
       "id": "rw",
       "modules": [
         {
-          "id": "nic-rw-m1",
+          "id": "nic25-rw-m1",
           "stage": 1,
           "name": "Reading and Writing — Module 1",
           "minutes": 32,
           "questions": [
             {
-              "id": "nic-rw-m1-1",
+              "id": "nic25-rw-m1-1",
               "domain": "Craft and Structure",
               "skill": "Words in Context",
               "difficulty": "medium",
@@ -59,7 +59,7 @@ Apex.bank.register({
               "explanation": "The appositive “variations in size, shape, and material” defines the blank as the particles' lack of uniformity—their <b>inconsistencies</b>."
             },
             {
-              "id": "nic-rw-m1-2",
+              "id": "nic25-rw-m1-2",
               "domain": "Craft and Structure",
               "skill": "Words in Context",
               "difficulty": "medium",
@@ -88,7 +88,7 @@ Apex.bank.register({
               "explanation": "Before this “concrete evidence,” the area relied on unproven competing theories, so it was previously <b>speculative</b>."
             },
             {
-              "id": "nic-rw-m1-3",
+              "id": "nic25-rw-m1-3",
               "domain": "Craft and Structure",
               "skill": "Words in Context",
               "difficulty": "medium",
@@ -117,7 +117,7 @@ Apex.bank.register({
               "explanation": "The breezes “meet and conflict” as each strives to control the air, so “mastery” means <b>domination</b>."
             },
             {
-              "id": "nic-rw-m1-4",
+              "id": "nic25-rw-m1-4",
               "domain": "Craft and Structure",
               "skill": "Words in Context",
               "difficulty": "medium",
@@ -146,7 +146,7 @@ Apex.bank.register({
               "explanation": "Seismic data narrows the area and orbital images pinpoint the crater, so the two sources work together—they are <b>complementary</b>."
             },
             {
-              "id": "nic-rw-m1-5",
+              "id": "nic25-rw-m1-5",
               "domain": "Craft and Structure",
               "skill": "Text Structure and Purpose",
               "difficulty": "medium",
@@ -175,7 +175,7 @@ Apex.bank.register({
               "explanation": "The text presents a study filling a gap in knowledge about juvenile turtles' oceanic stage, so its purpose is to <b>summarize research on an understudied stage</b>, A."
             },
             {
-              "id": "nic-rw-m1-6",
+              "id": "nic25-rw-m1-6",
               "domain": "Craft and Structure",
               "skill": "Text Structure and Purpose",
               "difficulty": "medium",
@@ -204,7 +204,7 @@ Apex.bank.register({
               "explanation": "The portion explains Baldwin's point that films failed to authentically represent reality, characterizing that disconnect, <b>C</b>."
             },
             {
-              "id": "nic-rw-m1-7",
+              "id": "nic25-rw-m1-7",
               "domain": "Information and Ideas",
               "skill": "Central Ideas and Details",
               "difficulty": "medium",
@@ -233,7 +233,7 @@ Apex.bank.register({
               "explanation": "The text defines literary critics as “people whose job it is to evaluate books,” <b>D</b>."
             },
             {
-              "id": "nic-rw-m1-8",
+              "id": "nic25-rw-m1-8",
               "domain": "Information and Ideas",
               "skill": "Central Ideas and Details",
               "difficulty": "medium",
@@ -262,7 +262,7 @@ Apex.bank.register({
               "explanation": "The text states the society “has more than 18,000 objects in its museum collection,” <b>D</b>."
             },
             {
-              "id": "nic-rw-m1-9",
+              "id": "nic25-rw-m1-9",
               "domain": "Information and Ideas",
               "skill": "Central Ideas and Details",
               "difficulty": "medium",
@@ -291,7 +291,7 @@ Apex.bank.register({
               "explanation": "Defoe argues a historian must state the authority (or lack thereof) behind each account, i.e., indicate how trustworthy each source is, <b>C</b>."
             },
             {
-              "id": "nic-rw-m1-10",
+              "id": "nic25-rw-m1-10",
               "domain": "Information and Ideas",
               "skill": "Command of Evidence",
               "difficulty": "medium",
@@ -320,7 +320,7 @@ Apex.bank.register({
               "explanation": "Choice B shows the surroundings unchanged yet newly perceived by Camilla as strange and desolate—a change in perception, <b>B</b>."
             },
             {
-              "id": "nic-rw-m1-11",
+              "id": "nic25-rw-m1-11",
               "domain": "Information and Ideas",
               "skill": "Command of Evidence",
               "difficulty": "medium",
@@ -349,7 +349,7 @@ Apex.bank.register({
               "explanation": "The claim is that membership peaks at a younger range (Brownies) then declines among older participants (Seniors); each year there were far fewer Seniors than Brownies, <b>D</b>."
             },
             {
-              "id": "nic-rw-m1-12",
+              "id": "nic25-rw-m1-12",
               "domain": "Information and Ideas",
               "skill": "Command of Evidence",
               "difficulty": "medium",
@@ -378,7 +378,7 @@ Apex.bank.register({
               "explanation": "The claim predicts fewer sounds farther from Africa; if languages in Europe/Western Asia (farther out) have MORE sounds than African ones, that directly undercuts it, <b>B</b>."
             },
             {
-              "id": "nic-rw-m1-13",
+              "id": "nic25-rw-m1-13",
               "domain": "Information and Ideas",
               "skill": "Inferences",
               "difficulty": "medium",
@@ -407,7 +407,7 @@ Apex.bank.register({
               "explanation": "Nonmusicians' optimal volume is lower, so the nonmusician would prefer a lower volume than 84.8 dB for that favorite recording, <b>A</b>."
             },
             {
-              "id": "nic-rw-m1-14",
+              "id": "nic25-rw-m1-14",
               "domain": "Information and Ideas",
               "skill": "Inferences",
               "difficulty": "medium",
@@ -436,7 +436,7 @@ Apex.bank.register({
               "explanation": "If ship sounds already dominate the soundscape, adding sonic pulses barely changes it, explaining why the two conditions produced nearly identical behavior, <b>C</b>."
             },
             {
-              "id": "nic-rw-m1-15",
+              "id": "nic25-rw-m1-15",
               "domain": "Standard English Conventions",
               "skill": "Form, Structure, and Sense",
               "difficulty": "medium",
@@ -465,7 +465,7 @@ Apex.bank.register({
               "explanation": "The singular subject “structure” needs the present-tense verb <b>determines</b>."
             },
             {
-              "id": "nic-rw-m1-16",
+              "id": "nic25-rw-m1-16",
               "domain": "Standard English Conventions",
               "skill": "Form, Structure, and Sense",
               "difficulty": "medium",
@@ -494,7 +494,7 @@ Apex.bank.register({
               "explanation": "The singular possessive referring to the territory, parallel with “its history” and “its coffee,” is <b>its</b>."
             },
             {
-              "id": "nic-rw-m1-17",
+              "id": "nic25-rw-m1-17",
               "domain": "Standard English Conventions",
               "skill": "Boundaries",
               "difficulty": "medium",
@@ -523,7 +523,7 @@ Apex.bank.register({
               "explanation": "No punctuation belongs between the subject “Dr. Rubén G. Mendoza” and its verb “studies,” <b>B</b>."
             },
             {
-              "id": "nic-rw-m1-18",
+              "id": "nic25-rw-m1-18",
               "domain": "Standard English Conventions",
               "skill": "Boundaries",
               "difficulty": "medium",
@@ -552,7 +552,7 @@ Apex.bank.register({
               "explanation": "A period ends the first sentence and “Lasting eight days…” begins a new one that modifies “the mission,” <b>A</b>."
             },
             {
-              "id": "nic-rw-m1-19",
+              "id": "nic25-rw-m1-19",
               "domain": "Standard English Conventions",
               "skill": "Boundaries",
               "difficulty": "medium",
@@ -581,7 +581,7 @@ Apex.bank.register({
               "explanation": "A period ends the first sentence; “Decreasing in thickness…, these veins allow…” is a new sentence with a participial opener, <b>C</b>."
             },
             {
-              "id": "nic-rw-m1-20",
+              "id": "nic25-rw-m1-20",
               "domain": "Standard English Conventions",
               "skill": "Form, Structure, and Sense",
               "difficulty": "medium",
@@ -610,7 +610,7 @@ Apex.bank.register({
               "explanation": "“electrograms” renames “Recordings…,” and the clause then reads “electrograms show that… players have increased activity,” a complete, clear sentence, <b>A</b>."
             },
             {
-              "id": "nic-rw-m1-21",
+              "id": "nic25-rw-m1-21",
               "domain": "Standard English Conventions",
               "skill": "Boundaries",
               "difficulty": "medium",
@@ -639,7 +639,7 @@ Apex.bank.register({
               "explanation": "The names are a restrictive (essential) appositive identifying which compounds, so no commas are used around them, <b>C</b>."
             },
             {
-              "id": "nic-rw-m1-22",
+              "id": "nic25-rw-m1-22",
               "domain": "Expression of Ideas",
               "skill": "Transitions",
               "difficulty": "medium",
@@ -668,7 +668,7 @@ Apex.bank.register({
               "explanation": "Rather than the far-off planet, humanity should focus on closer ones; the contrast/substitution transition is <b>Instead,</b>."
             },
             {
-              "id": "nic-rw-m1-23",
+              "id": "nic25-rw-m1-23",
               "domain": "Expression of Ideas",
               "skill": "Transitions",
               "difficulty": "medium",
@@ -697,7 +697,7 @@ Apex.bank.register({
               "explanation": "By analyzing the palettes, Loske reveals clues; the means/result transition is <b>In doing so,</b>."
             },
             {
-              "id": "nic-rw-m1-24",
+              "id": "nic25-rw-m1-24",
               "domain": "Expression of Ideas",
               "skill": "Transitions",
               "difficulty": "medium",
@@ -726,7 +726,7 @@ Apex.bank.register({
               "explanation": "The 60-million-year-old glaciers lead to the conclusion that glaciers predate the 34-million-year-old ice sheet, a cause-and-effect transition, <b>Thus,</b>."
             },
             {
-              "id": "nic-rw-m1-25",
+              "id": "nic25-rw-m1-25",
               "domain": "Expression of Ideas",
               "skill": "Transitions",
               "difficulty": "medium",
@@ -755,7 +755,7 @@ Apex.bank.register({
               "explanation": "Suppressed responses during acting versus normal responses when not acting is a contrast, so <b>conversely,</b>."
             },
             {
-              "id": "nic-rw-m1-26",
+              "id": "nic25-rw-m1-26",
               "domain": "Expression of Ideas",
               "skill": "Rhetorical Synthesis",
               "difficulty": "medium",
@@ -784,7 +784,7 @@ Apex.bank.register({
               "explanation": "Only D directly compares the two durations (twenty-two vs. fifty-four years), <b>D</b>."
             },
             {
-              "id": "nic-rw-m1-27",
+              "id": "nic25-rw-m1-27",
               "domain": "Expression of Ideas",
               "skill": "Rhetorical Synthesis",
               "difficulty": "medium",
@@ -815,14 +815,14 @@ Apex.bank.register({
           ]
         },
         {
-          "id": "nic-rw-m2",
+          "id": "nic25-rw-m2",
           "stage": 2,
           "variant": "easy",
           "name": "Reading and Writing — Module 2 (Easy)",
           "minutes": 32,
           "questions": [
             {
-              "id": "nic-rw-m2-1",
+              "id": "nic25-rw-m2-1",
               "domain": "Craft and Structure",
               "skill": "Words in Context",
               "difficulty": "easy",
@@ -851,7 +851,7 @@ Apex.bank.register({
               "explanation": "Since many species remain undiscovered, most extinct animals are still <b>unknown</b>."
             },
             {
-              "id": "nic-rw-m2-2",
+              "id": "nic25-rw-m2-2",
               "domain": "Craft and Structure",
               "skill": "Words in Context",
               "difficulty": "easy",
@@ -880,7 +880,7 @@ Apex.bank.register({
               "explanation": "Their language is full of temporal expressions, so they are not <b>inattentive to</b> time."
             },
             {
-              "id": "nic-rw-m2-3",
+              "id": "nic25-rw-m2-3",
               "domain": "Craft and Structure",
               "skill": "Words in Context",
               "difficulty": "easy",
@@ -909,7 +909,7 @@ Apex.bank.register({
               "explanation": "They used “the same questions,” so the questions were <b>identical to</b> those in the 1979 study."
             },
             {
-              "id": "nic-rw-m2-4",
+              "id": "nic25-rw-m2-4",
               "domain": "Craft and Structure",
               "skill": "Words in Context",
               "difficulty": "easy",
@@ -938,7 +938,7 @@ Apex.bank.register({
               "explanation": "Their status as “first” is permanent, so nobody can ever <b>undermine</b> it."
             },
             {
-              "id": "nic-rw-m2-5",
+              "id": "nic25-rw-m2-5",
               "domain": "Craft and Structure",
               "skill": "Words in Context",
               "difficulty": "easy",
@@ -967,7 +967,7 @@ Apex.bank.register({
               "explanation": "The light quietly fades into the dark corners, so “steals away” means <b>slips away</b>."
             },
             {
-              "id": "nic-rw-m2-6",
+              "id": "nic25-rw-m2-6",
               "domain": "Craft and Structure",
               "skill": "Words in Context",
               "difficulty": "easy",
@@ -996,7 +996,7 @@ Apex.bank.register({
               "explanation": "The question is whether one thing causes the other, so “produce” means <b>bring about</b>."
             },
             {
-              "id": "nic-rw-m2-7",
+              "id": "nic25-rw-m2-7",
               "domain": "Craft and Structure",
               "skill": "Text Structure and Purpose",
               "difficulty": "easy",
@@ -1025,7 +1025,7 @@ Apex.bank.register({
               "explanation": "The two named film adaptations are specific examples supporting the claim that book-based movies are often commercial successes, <b>A</b>."
             },
             {
-              "id": "nic-rw-m2-8",
+              "id": "nic25-rw-m2-8",
               "domain": "Craft and Structure",
               "skill": "Text Structure and Purpose",
               "difficulty": "easy",
@@ -1054,7 +1054,7 @@ Apex.bank.register({
               "explanation": "Montana's result being “in keeping with” many other states shows the finding is part of a widespread trend, <b>B</b>."
             },
             {
-              "id": "nic-rw-m2-9",
+              "id": "nic25-rw-m2-9",
               "domain": "Craft and Structure",
               "skill": "Cross-Text Connections",
               "difficulty": "easy",
@@ -1083,7 +1083,7 @@ Apex.bank.register({
               "explanation": "Lorde holds that poetry can be made in spare moments regardless of financial security, countering Text 2, <b>B</b>."
             },
             {
-              "id": "nic-rw-m2-10",
+              "id": "nic25-rw-m2-10",
               "domain": "Information and Ideas",
               "skill": "Central Ideas and Details",
               "difficulty": "easy",
@@ -1112,7 +1112,7 @@ Apex.bank.register({
               "explanation": "Hincapié found that providing informational resources alleviates the knowledge gap, <b>B</b>."
             },
             {
-              "id": "nic-rw-m2-11",
+              "id": "nic25-rw-m2-11",
               "domain": "Information and Ideas",
               "skill": "Central Ideas and Details",
               "difficulty": "easy",
@@ -1141,7 +1141,7 @@ Apex.bank.register({
               "explanation": "The text says the “diverse marine life” draws divers and scientists, <b>A</b>."
             },
             {
-              "id": "nic-rw-m2-12",
+              "id": "nic25-rw-m2-12",
               "domain": "Information and Ideas",
               "skill": "Command of Evidence",
               "difficulty": "easy",
@@ -1170,7 +1170,7 @@ Apex.bank.register({
               "explanation": "Tetris (puzzle, 43,000,000) and Super Mario Brothers 2 (platformer, 7,460,000) are the two highest sellers, <b>C</b>."
             },
             {
-              "id": "nic-rw-m2-13",
+              "id": "nic25-rw-m2-13",
               "domain": "Information and Ideas",
               "skill": "Inferences",
               "difficulty": "easy",
@@ -1199,7 +1199,7 @@ Apex.bank.register({
               "explanation": "Vanderburgh used intact natural communities to better reflect real conditions, implying the added-strain soil wasn't representative of natural composition, <b>C</b>."
             },
             {
-              "id": "nic-rw-m2-14",
+              "id": "nic25-rw-m2-14",
               "domain": "Information and Ideas",
               "skill": "Inferences",
               "difficulty": "easy",
@@ -1228,7 +1228,7 @@ Apex.bank.register({
               "explanation": "If genes track with this behavior and the two breeds differ greatly in it, they likely differ in the associated genes, <b>C</b>."
             },
             {
-              "id": "nic-rw-m2-15",
+              "id": "nic25-rw-m2-15",
               "domain": "Standard English Conventions",
               "skill": "Boundaries",
               "difficulty": "easy",
@@ -1257,7 +1257,7 @@ Apex.bank.register({
               "explanation": "A colon introduces the explanation of the chemical defense that follows, <b>A</b>."
             },
             {
-              "id": "nic-rw-m2-16",
+              "id": "nic25-rw-m2-16",
               "domain": "Standard English Conventions",
               "skill": "Boundaries",
               "difficulty": "easy",
@@ -1286,7 +1286,7 @@ Apex.bank.register({
               "explanation": "Two independent clauses need a period: “…at Rice University. She conducts research…,” <b>A</b>."
             },
             {
-              "id": "nic-rw-m2-17",
+              "id": "nic25-rw-m2-17",
               "domain": "Standard English Conventions",
               "skill": "Form, Structure, and Sense",
               "difficulty": "easy",
@@ -1315,7 +1315,7 @@ Apex.bank.register({
               "explanation": "The singular pronoun referring to the one painting <i>Kiesler and Wife</i> is <b>it</b>."
             },
             {
-              "id": "nic-rw-m2-18",
+              "id": "nic25-rw-m2-18",
               "domain": "Standard English Conventions",
               "skill": "Form, Structure, and Sense",
               "difficulty": "easy",
@@ -1344,7 +1344,7 @@ Apex.bank.register({
               "explanation": "The singular demonstrative modifying “play” is <b>This</b>."
             },
             {
-              "id": "nic-rw-m2-19",
+              "id": "nic25-rw-m2-19",
               "domain": "Standard English Conventions",
               "skill": "Form, Structure, and Sense",
               "difficulty": "easy",
@@ -1373,7 +1373,7 @@ Apex.bank.register({
               "explanation": "The infinitive “to communicate” correctly expresses the purpose the codes were used for, <b>A</b>."
             },
             {
-              "id": "nic-rw-m2-20",
+              "id": "nic25-rw-m2-20",
               "domain": "Standard English Conventions",
               "skill": "Form, Structure, and Sense",
               "difficulty": "easy",
@@ -1402,7 +1402,7 @@ Apex.bank.register({
               "explanation": "The singular subject needs a finite past-tense verb: “This form of paper currency <b>was</b> discontinued,” <b>C</b>."
             },
             {
-              "id": "nic-rw-m2-21",
+              "id": "nic25-rw-m2-21",
               "domain": "Standard English Conventions",
               "skill": "Form, Structure, and Sense",
               "difficulty": "easy",
@@ -1431,7 +1431,7 @@ Apex.bank.register({
               "explanation": "The singular pronoun referring to the one painting is <b>it</b>."
             },
             {
-              "id": "nic-rw-m2-22",
+              "id": "nic25-rw-m2-22",
               "domain": "Expression of Ideas",
               "skill": "Transitions",
               "difficulty": "easy",
@@ -1460,7 +1460,7 @@ Apex.bank.register({
               "explanation": "The second clause restates and clarifies “regional authenticity,” so the transition is <b>that is,</b>."
             },
             {
-              "id": "nic-rw-m2-23",
+              "id": "nic25-rw-m2-23",
               "domain": "Expression of Ideas",
               "skill": "Transitions",
               "difficulty": "easy",
@@ -1489,7 +1489,7 @@ Apex.bank.register({
               "explanation": "A complex volcano versus a stratovolcano is a contrast, so <b>in contrast,</b>."
             },
             {
-              "id": "nic-rw-m2-24",
+              "id": "nic25-rw-m2-24",
               "domain": "Expression of Ideas",
               "skill": "Transitions",
               "difficulty": "easy",
@@ -1518,7 +1518,7 @@ Apex.bank.register({
               "explanation": "Dubhe having a higher number than the brighter Adhara follows directly from the reverse-scale rule, so <b>Hence,</b>."
             },
             {
-              "id": "nic-rw-m2-25",
+              "id": "nic25-rw-m2-25",
               "domain": "Expression of Ideas",
               "skill": "Rhetorical Synthesis",
               "difficulty": "easy",
@@ -1547,7 +1547,7 @@ Apex.bank.register({
               "explanation": "Only C contrasts the two games' different source authors, emphasizing a difference, <b>C</b>."
             },
             {
-              "id": "nic-rw-m2-26",
+              "id": "nic25-rw-m2-26",
               "domain": "Expression of Ideas",
               "skill": "Rhetorical Synthesis",
               "difficulty": "easy",
@@ -1576,7 +1576,7 @@ Apex.bank.register({
               "explanation": "Only C gives the reason (humans cannot make vitamin C) and the consequence (must get it from food), <b>C</b>."
             },
             {
-              "id": "nic-rw-m2-27",
+              "id": "nic25-rw-m2-27",
               "domain": "Expression of Ideas",
               "skill": "Rhetorical Synthesis",
               "difficulty": "easy",
@@ -1612,14 +1612,14 @@ Apex.bank.register({
       "id": "math",
       "modules": [
         {
-          "id": "nic-math-m1",
+          "id": "nic25-math-m1",
           "stage": 1,
           "name": "Math — Module 1",
           "minutes": 35,
           "calculator": true,
           "questions": [
             {
-              "id": "nic-math-m1-1",
+              "id": "nic25-math-m1-1",
               "domain": "Algebra",
               "skill": "Linear functions",
               "difficulty": "medium",
@@ -1647,7 +1647,7 @@ Apex.bank.register({
               "explanation": "g(2) = 4(2) + 2 = <b>10</b>, D."
             },
             {
-              "id": "nic-math-m1-2",
+              "id": "nic25-math-m1-2",
               "domain": "Algebra",
               "skill": "Linear inequalities in one or two variables",
               "difficulty": "medium",
@@ -1659,7 +1659,7 @@ Apex.bank.register({
               "explanation": "35 + 15.25n ≤ 225 → 15.25n ≤ 190 → n ≤ 12.45, so the greatest whole number is <b>12</b>."
             },
             {
-              "id": "nic-math-m1-3",
+              "id": "nic25-math-m1-3",
               "domain": "Advanced Math",
               "skill": "Equivalent expressions",
               "difficulty": "medium",
@@ -1687,7 +1687,7 @@ Apex.bank.register({
               "explanation": "Factor out 7x: 42x<sup>3</sup> + 7x = 7x(6x<sup>2</sup> + 1), <b>B</b>."
             },
             {
-              "id": "nic-math-m1-4",
+              "id": "nic25-math-m1-4",
               "domain": "Problem-Solving and Data Analysis",
               "skill": "Ratios, rates, proportional relationships, and units",
               "difficulty": "medium",
@@ -1699,7 +1699,7 @@ Apex.bank.register({
               "explanation": "Length = 2 × width = 2(67) = <b>134</b> cm."
             },
             {
-              "id": "nic-math-m1-5",
+              "id": "nic25-math-m1-5",
               "domain": "Problem-Solving and Data Analysis",
               "skill": "Two-variable data: models and scatterplots",
               "difficulty": "medium",
@@ -1727,7 +1727,7 @@ Apex.bank.register({
               "explanation": "Following the trend line at x = 4 thousand square feet gives annual sales of about <b>7.5</b> million dollars, C."
             },
             {
-              "id": "nic-math-m1-6",
+              "id": "nic25-math-m1-6",
               "domain": "Advanced Math",
               "skill": "Nonlinear functions",
               "difficulty": "medium",
@@ -1739,7 +1739,7 @@ Apex.bank.register({
               "explanation": "Initially x = 0, so y = 2,600(a)<sup>0</sup> = <b>2,600</b>."
             },
             {
-              "id": "nic-math-m1-7",
+              "id": "nic25-math-m1-7",
               "domain": "Algebra",
               "skill": "Linear equations in one variable",
               "difficulty": "medium",
@@ -1767,7 +1767,7 @@ Apex.bank.register({
               "explanation": "6x − 8 = 4 gives 6x = 12, so 6x + 8 = 12 + 8 = <b>20</b>, D."
             },
             {
-              "id": "nic-math-m1-8",
+              "id": "nic25-math-m1-8",
               "domain": "Problem-Solving and Data Analysis",
               "skill": "Percentages",
               "difficulty": "medium",
@@ -1795,7 +1795,7 @@ Apex.bank.register({
               "explanation": "f = g + 1.20g = 2.2g and h = 0.10f = 0.10(2.2g) = 0.22g, so h is <b>0.22</b> times g, B."
             },
             {
-              "id": "nic-math-m1-9",
+              "id": "nic25-math-m1-9",
               "domain": "Problem-Solving and Data Analysis",
               "skill": "Percentages",
               "difficulty": "medium",
@@ -1823,7 +1823,7 @@ Apex.bank.register({
               "explanation": "71 / 1,000 = 0.071 = <b>7.1%</b>, B."
             },
             {
-              "id": "nic-math-m1-10",
+              "id": "nic25-math-m1-10",
               "domain": "Geometry and Trigonometry",
               "skill": "Right triangles and trigonometry",
               "difficulty": "medium",
@@ -1835,7 +1835,7 @@ Apex.bank.register({
               "explanation": "sin D = b/c = opposite/hypotenuse, so D is the bottom-left angle = 180° − 90° − 58° = <b>32°</b>."
             },
             {
-              "id": "nic-math-m1-11",
+              "id": "nic25-math-m1-11",
               "domain": "Geometry and Trigonometry",
               "skill": "Lines, angles, and triangles",
               "difficulty": "medium",
@@ -1863,7 +1863,7 @@ Apex.bank.register({
               "explanation": "x and y are same-side interior angles, so x + y = 180; if x &gt; 134 then y = 180 − x &lt; 46, <b>A</b>."
             },
             {
-              "id": "nic-math-m1-12",
+              "id": "nic25-math-m1-12",
               "domain": "Algebra",
               "skill": "Linear equations in two variables",
               "difficulty": "medium",
@@ -1891,7 +1891,7 @@ Apex.bank.register({
               "explanation": "Using y = (1/8)x + b with (32, −7): −7 = 4 + b → b = −11, so y = x/8 − 11, <b>B</b>."
             },
             {
-              "id": "nic-math-m1-13",
+              "id": "nic25-math-m1-13",
               "domain": "Algebra",
               "skill": "Linear functions",
               "difficulty": "medium",
@@ -1919,7 +1919,7 @@ Apex.bank.register({
               "explanation": "The slope is the added cost per game; the line rises $16 per game, so <b>each game costs $16</b>, A. (The y-intercept, $50, is the system's cost.)"
             },
             {
-              "id": "nic-math-m1-14",
+              "id": "nic25-math-m1-14",
               "domain": "Geometry and Trigonometry",
               "skill": "Circles",
               "difficulty": "medium",
@@ -1931,7 +1931,7 @@ Apex.bank.register({
               "explanation": "The radius is √361 = <b>19</b>."
             },
             {
-              "id": "nic-math-m1-15",
+              "id": "nic25-math-m1-15",
               "domain": "Algebra",
               "skill": "Systems of two linear equations in two variables",
               "difficulty": "medium",
@@ -1959,7 +1959,7 @@ Apex.bank.register({
               "explanation": "y = 4x, so x<sup>2</sup> + 16x<sup>2</sup> = 1,088 → 17x<sup>2</sup> = 1,088 → x<sup>2</sup> = 64 → x = −8 (since x &lt; 0), y = 4(−8) = <b>−32</b>, B."
             },
             {
-              "id": "nic-math-m1-16",
+              "id": "nic25-math-m1-16",
               "domain": "Advanced Math",
               "skill": "Nonlinear functions",
               "difficulty": "medium",
@@ -1987,7 +1987,7 @@ Apex.bank.register({
               "explanation": "x<sup>2</sup> is smallest (0) at x = 0, giving f(0) = 10(47) = <b>470</b>, D."
             },
             {
-              "id": "nic-math-m1-17",
+              "id": "nic25-math-m1-17",
               "domain": "Advanced Math",
               "skill": "Nonlinear functions",
               "difficulty": "medium",
@@ -2015,7 +2015,7 @@ Apex.bank.register({
               "explanation": "j(9) = 95/(3p); k(9) = (95/(3p))·p / 10 = (95/3)/10 = 95/30 = <b>19/6</b>, A."
             },
             {
-              "id": "nic-math-m1-18",
+              "id": "nic25-math-m1-18",
               "domain": "Algebra",
               "skill": "Linear inequalities in one or two variables",
               "difficulty": "medium",
@@ -2043,7 +2043,7 @@ Apex.bank.register({
               "explanation": "For x &lt; 0 and y &gt; 0, 7x &lt; 0 and −6y &lt; 0, so 7x − 6y is negative and can never exceed 42, <b>D</b>."
             },
             {
-              "id": "nic-math-m1-19",
+              "id": "nic25-math-m1-19",
               "domain": "Algebra",
               "skill": "Systems of two linear equations in two variables",
               "difficulty": "medium",
@@ -2071,7 +2071,7 @@ Apex.bank.register({
               "explanation": "The second equation is 6 times the first, so they are the same line: <b>infinitely many</b> solutions, C."
             },
             {
-              "id": "nic-math-m1-20",
+              "id": "nic25-math-m1-20",
               "domain": "Advanced Math",
               "skill": "Nonlinear equations in one variable and systems of equations in two variables",
               "difficulty": "medium",
@@ -2099,7 +2099,7 @@ Apex.bank.register({
               "explanation": "|4x − 48| + 4 = 48 → |4x − 48| = 44 → x = 23 or x = 1; the sum is <b>24</b>, C."
             },
             {
-              "id": "nic-math-m1-21",
+              "id": "nic25-math-m1-21",
               "domain": "Algebra",
               "skill": "Linear functions",
               "difficulty": "medium",
@@ -2127,7 +2127,7 @@ Apex.bank.register({
               "explanation": "Population = 1,600 + 220 + 165(w − 2) = 1,490 + 165w; bees needed = 2,975 − (1,490 + 165w) = 1,485 − 165w, <b>B</b>."
             },
             {
-              "id": "nic-math-m1-22",
+              "id": "nic25-math-m1-22",
               "domain": "Advanced Math",
               "skill": "Nonlinear equations in one variable and systems of equations in two variables",
               "difficulty": "medium",
@@ -2141,7 +2141,7 @@ Apex.bank.register({
           ]
         },
         {
-          "id": "nic-math-m2",
+          "id": "nic25-math-m2",
           "stage": 2,
           "variant": "easy",
           "name": "Math — Module 2 (Easy)",
@@ -2149,7 +2149,7 @@ Apex.bank.register({
           "calculator": true,
           "questions": [
             {
-              "id": "nic-math-m2-1",
+              "id": "nic25-math-m2-1",
               "domain": "Problem-Solving and Data Analysis",
               "skill": "Ratios, rates, proportional relationships, and units",
               "difficulty": "easy",
@@ -2161,7 +2161,7 @@ Apex.bank.register({
               "explanation": "Remaining pages = 180 − 140 = 40; at 1 page per minute that takes <b>40</b> minutes."
             },
             {
-              "id": "nic-math-m2-2",
+              "id": "nic25-math-m2-2",
               "domain": "Geometry and Trigonometry",
               "skill": "Lines, angles, and triangles",
               "difficulty": "easy",
@@ -2189,7 +2189,7 @@ Apex.bank.register({
               "explanation": "The angles of a triangle sum to 180°, so x = 180 − 132 − 24 = <b>24</b>, D."
             },
             {
-              "id": "nic-math-m2-3",
+              "id": "nic25-math-m2-3",
               "domain": "Algebra",
               "skill": "Linear equations in one variable",
               "difficulty": "easy",
@@ -2217,7 +2217,7 @@ Apex.bank.register({
               "explanation": "p = 1 + 22 = <b>23</b>, D."
             },
             {
-              "id": "nic-math-m2-4",
+              "id": "nic25-math-m2-4",
               "domain": "Algebra",
               "skill": "Systems of two linear equations in two variables",
               "difficulty": "easy",
@@ -2229,7 +2229,7 @@ Apex.bank.register({
               "explanation": "Subtracting the first equation from the second: (x + 2y) − (x + y) = 185 − 105, so y = <b>80</b>."
             },
             {
-              "id": "nic-math-m2-5",
+              "id": "nic25-math-m2-5",
               "domain": "Problem-Solving and Data Analysis",
               "skill": "One-variable data: distributions and measures of center and spread",
               "difficulty": "easy",
@@ -2257,7 +2257,7 @@ Apex.bank.register({
               "explanation": "Each set has 11 values, so the median is the 6th value: 14 for A and 14 for B, so the medians are <b>equal</b>, C."
             },
             {
-              "id": "nic-math-m2-6",
+              "id": "nic25-math-m2-6",
               "domain": "Advanced Math",
               "skill": "Nonlinear functions",
               "difficulty": "easy",
@@ -2285,7 +2285,7 @@ Apex.bank.register({
               "explanation": "Initial value 70 and a 30% increase per step give y = 70(1.30)<sup>x</sup>, <b>A</b>."
             },
             {
-              "id": "nic-math-m2-7",
+              "id": "nic25-math-m2-7",
               "domain": "Algebra",
               "skill": "Linear functions",
               "difficulty": "easy",
@@ -2297,7 +2297,7 @@ Apex.bank.register({
               "explanation": "a = (5 − (−7)) / (1 − (−2)) = 12/3 = <b>4</b>."
             },
             {
-              "id": "nic-math-m2-8",
+              "id": "nic25-math-m2-8",
               "domain": "Problem-Solving and Data Analysis",
               "skill": "Inference from sample statistics and margin of error",
               "difficulty": "easy",
@@ -2325,7 +2325,7 @@ Apex.bank.register({
               "explanation": "146 ± 1 gives the interval from 145 to 147, so <b>any value between 145 and 147</b>, B."
             },
             {
-              "id": "nic-math-m2-9",
+              "id": "nic25-math-m2-9",
               "domain": "Algebra",
               "skill": "Linear equations in two variables",
               "difficulty": "easy",
@@ -2353,7 +2353,7 @@ Apex.bank.register({
               "explanation": "A slope of 0 gives a horizontal line through y = 7, so y = 7, <b>A</b>."
             },
             {
-              "id": "nic-math-m2-10",
+              "id": "nic25-math-m2-10",
               "domain": "Geometry and Trigonometry",
               "skill": "Area and volume",
               "difficulty": "easy",
@@ -2365,7 +2365,7 @@ Apex.bank.register({
               "explanation": "Length = 4 + 6(9) = 58 cm; area = 58 × 9 = <b>522</b> cm<sup>2</sup>."
             },
             {
-              "id": "nic-math-m2-11",
+              "id": "nic25-math-m2-11",
               "domain": "Advanced Math",
               "skill": "Nonlinear equations in one variable and systems of equations in two variables",
               "difficulty": "easy",
@@ -2393,7 +2393,7 @@ Apex.bank.register({
               "explanation": "5x = x<sup>2</sup> − 24 → x<sup>2</sup> − 5x − 24 = 0; by Vieta's formulas the sum of the roots is <b>5</b>, C."
             },
             {
-              "id": "nic-math-m2-12",
+              "id": "nic25-math-m2-12",
               "domain": "Geometry and Trigonometry",
               "skill": "Right triangles and trigonometry",
               "difficulty": "easy",
@@ -2421,7 +2421,7 @@ Apex.bank.register({
               "explanation": "Since X + Y = 90°, sin X = cos(90° − X) = cos Y, <b>D</b>."
             },
             {
-              "id": "nic-math-m2-13",
+              "id": "nic25-math-m2-13",
               "domain": "Algebra",
               "skill": "Linear equations in two variables",
               "difficulty": "easy",
@@ -2449,7 +2449,7 @@ Apex.bank.register({
               "explanation": "Slope = ((r − 21) − r) / (3 − 0) = −21/3 = <b>−7</b>, B."
             },
             {
-              "id": "nic-math-m2-14",
+              "id": "nic25-math-m2-14",
               "domain": "Problem-Solving and Data Analysis",
               "skill": "Percentages",
               "difficulty": "easy",
@@ -2477,7 +2477,7 @@ Apex.bank.register({
               "explanation": "50% of 480 = 0.5 × 480 = <b>240</b>, C."
             },
             {
-              "id": "nic-math-m2-15",
+              "id": "nic25-math-m2-15",
               "domain": "Problem-Solving and Data Analysis",
               "skill": "Ratios, rates, proportional relationships, and units",
               "difficulty": "easy",
@@ -2490,7 +2490,7 @@ Apex.bank.register({
               "explanation": "28,512 ÷ 1,760 = <b>16.2</b> miles per hour."
             },
             {
-              "id": "nic-math-m2-16",
+              "id": "nic25-math-m2-16",
               "domain": "Geometry and Trigonometry",
               "skill": "Right triangles and trigonometry",
               "difficulty": "easy",
@@ -2518,7 +2518,7 @@ Apex.bank.register({
               "explanation": "Angle B corresponds to angle E in similar triangles, so cos E = cos B = <b>1/24</b>, A."
             },
             {
-              "id": "nic-math-m2-17",
+              "id": "nic25-math-m2-17",
               "domain": "Algebra",
               "skill": "Linear equations in two variables",
               "difficulty": "easy",
@@ -2546,7 +2546,7 @@ Apex.bank.register({
               "explanation": "Line j has slope 6 and y-intercept −10: y = 6x − 10. Setting 6x − 10 = 4x gives x = 5, y = 20, so <b>(5, 20)</b>, A."
             },
             {
-              "id": "nic-math-m2-18",
+              "id": "nic25-math-m2-18",
               "domain": "Advanced Math",
               "skill": "Nonlinear functions",
               "difficulty": "easy",
@@ -2574,7 +2574,7 @@ Apex.bank.register({
               "explanation": "Shifting up 4 units adds 4 to the output: y = (1/9)<sup>x</sup> + 1 + 4 = (1/9)<sup>x</sup> + 5, <b>D</b>."
             },
             {
-              "id": "nic-math-m2-19",
+              "id": "nic25-math-m2-19",
               "domain": "Advanced Math",
               "skill": "Nonlinear functions",
               "difficulty": "easy",
@@ -2602,7 +2602,7 @@ Apex.bank.register({
               "explanation": "f(17) = 600 means at x = 17 mm below the surface the intensity is 600 photons, <b>C</b>."
             },
             {
-              "id": "nic-math-m2-20",
+              "id": "nic25-math-m2-20",
               "domain": "Algebra",
               "skill": "Linear functions",
               "difficulty": "easy",
@@ -2630,7 +2630,7 @@ Apex.bank.register({
               "explanation": "h(0) = 0 gives intercept 0; slope = 3/4, so h(x) = (3/4)x, <b>C</b>."
             },
             {
-              "id": "nic-math-m2-21",
+              "id": "nic25-math-m2-21",
               "domain": "Advanced Math",
               "skill": "Nonlinear equations in one variable and systems of equations in two variables",
               "difficulty": "easy",
@@ -2643,7 +2643,7 @@ Apex.bank.register({
               "explanation": "The product is zero when any factor is zero: x = 16, 12, −9, or −19. A positive solution is <b>16</b> (or 12)."
             },
             {
-              "id": "nic-math-m2-22",
+              "id": "nic25-math-m2-22",
               "domain": "Advanced Math",
               "skill": "Nonlinear equations in one variable and systems of equations in two variables",
               "difficulty": "easy",

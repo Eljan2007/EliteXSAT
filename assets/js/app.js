@@ -257,4 +257,13 @@ Apex.app = (function () {
   return { boot, go, route, startExam, resume, setFocus, toggleCollapse };
 })();
 
-document.addEventListener("DOMContentLoaded", Apex.app.boot);
+// Boot as soon as the app scripts have run — do NOT wait for the (deferred) exam-data
+// files. This lets the login/UI appear immediately even on slow connections where the
+// ~11 MB of exam data would otherwise block startup. The exam bank fills in as those
+// deferred files arrive; once they're all in (DOMContentLoaded), refresh the current view.
+if (document.readyState === "loading") {
+  Apex.app.boot();
+  document.addEventListener("DOMContentLoaded", () => { try { Apex.app.route(); } catch (e) {} });
+} else {
+  Apex.app.boot();
+}
