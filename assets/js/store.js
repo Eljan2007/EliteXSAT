@@ -113,6 +113,18 @@ Apex.store = (function () {
       return { id: authUser.id, name, email: authUser.email, targetScore };
     };
 
+    // Pull a human-readable message out of a Supabase error (never "{}" / "[object Object]").
+    const authMsg = (e) => {
+      let m = (e && (e.message || e.error_description || e.msg)) || "";
+      if (typeof m !== "string") m = "";
+      m = m.trim();
+      if (m && m !== "{}" && m !== "[object Object]") return m;
+      const status = e && (e.status || e.code);
+      if (status === 429) return "Too many attempts right now — please wait about a minute, then try again.";
+      if (status === 422 || status === 400) return "That email or password wasn't accepted. Please double-check and try again.";
+      return "We couldn't complete that just now. Please try again in a moment.";
+    };
+
     return {
       async init() {
         if (!cfg.supabase.url || !cfg.supabase.anonKey)
@@ -129,14 +141,16 @@ Apex.store = (function () {
         const { data, error } = await sb.auth.signUp({
           email, password, options: { data: { name } },
         });
-        if (error) throw new Error(error.message);
-        if (data.user) await sb.from("profiles").upsert({ id: data.user.id, name, target_score: 1400 });
-        if (!data.session) throw new Error("Check your email to confirm your account, then sign in.");
+        if (error) throw new Error(authMsg(error));
+        // No session → email confirmation is required. Say so clearly; don't try to write the
+        // profile yet (it would be an unauthenticated write and fail).
+        if (!data.session) throw new Error("Account created! Check your email to confirm it, then sign in.");
+        if (data.user) { try { await sb.from("profiles").upsert({ id: data.user.id, name, target_score: 1400 }); } catch (e) {} }
         _user = await profileFrom(data.user); emit(); return _user;
       },
       async signIn({ email, password }) {
         const { data, error } = await sb.auth.signInWithPassword({ email, password });
-        if (error) throw new Error(error.message);
+        if (error) throw new Error(authMsg(error));
         _user = await profileFrom(data.user); emit(); return _user;
       },
       async signOut() { await sb.auth.signOut(); _user = null; emit(); },
@@ -178,6 +192,21 @@ Apex.store = (function () {
         return error ? [] : (data || []);
       },
       async updateReport(id, patch) { await sb.from("reports").update(patch).eq("id", id); },
+      // ---- Custom exams (tutor-authored, stored in Supabase) ----
+      async saveExam(exam) {
+        const row = { title: exam.title, meta: exam.meta || {}, questions: exam.questions || [], published: !!exam.published, updated_at: new Date().toISOString() };
+        if (exam.id) {
+          const { data, error } = await sb.from("custom_exams").update(row).eq("id", exam.id).select().maybeSingle();
+          if (error) throw new Error(error.message); return data;
+        }
+        row.user_id = _user.id;
+        const { data, error } = await sb.from("custom_exams").insert(row).select().maybeSingle();
+        if (error) throw new Error(error.message); return data;
+      },
+      async listExams() { const { data, error } = await sb.from("custom_exams").select("*").order("updated_at", { ascending: false }); return error ? [] : (data || []); },
+      async getExam(id) { const { data } = await sb.from("custom_exams").select("*").eq("id", id).maybeSingle(); return data || null; },
+      async deleteExam(id) { await sb.from("custom_exams").delete().eq("id", id); },
+      async publishedExams() { const { data, error } = await sb.from("custom_exams").select("*").eq("published", true).order("updated_at", { ascending: false }); return error ? [] : (data || []); },
     };
   })();
 
@@ -239,6 +268,11 @@ Apex.store = (function () {
     saveReport: (r) => driver.saveReport(r),
     listReports: () => driver.listReports(),
     updateReport: (id, p) => driver.updateReport(id, p),
+    saveExam: (e) => (driver.saveExam ? driver.saveExam(e) : Promise.reject(new Error("Creating exams requires the cloud backend."))),
+    listExams: () => (driver.listExams ? driver.listExams() : Promise.resolve([])),
+    getExam: (id) => (driver.getExam ? driver.getExam(id) : Promise.resolve(null)),
+    deleteExam: (id) => (driver.deleteExam ? driver.deleteExam(id) : Promise.resolve()),
+    publishedExams: () => (driver.publishedExams ? driver.publishedExams() : Promise.resolve([])),
     getStats,
   };
 })();
