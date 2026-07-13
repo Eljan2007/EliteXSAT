@@ -98,14 +98,23 @@ Apex.store = (function () {
   const remote = (() => {
     let sb = null;
 
-    const loadSdk = () => new Promise((resolve, reject) => {
-      if (window.supabase && window.supabase.createClient) return resolve();
+    const loadScript = (src) => new Promise((resolve, reject) => {
       const s = document.createElement("script");
-      s.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+      s.src = src;
       s.onload = () => resolve();
-      s.onerror = () => reject(new Error("Could not load the Supabase SDK (check your connection)."));
+      s.onerror = () => reject(new Error("load failed: " + src));
       document.head.appendChild(s);
     });
+    // Load the SDK from our OWN server first (works even on networks that block public CDNs
+    // like jsdelivr); only fall back to the CDN if the self-hosted copy is missing.
+    const loadSdk = async () => {
+      if (window.supabase && window.supabase.createClient) return;
+      try { await loadScript("assets/js/vendor/supabase.min.js?v=272"); } catch (e) {}
+      if (window.supabase && window.supabase.createClient) return;
+      try { await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"); } catch (e) {}
+      if (!(window.supabase && window.supabase.createClient))
+        throw new Error("Could not load the Supabase SDK.");
+    };
 
     const profileFrom = async (authUser) => {
       if (!authUser) return null;
