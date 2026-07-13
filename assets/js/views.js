@@ -142,8 +142,6 @@ Apex.views = (function () {
               <button class="btn btn-primary btn-lg btn-block" type="submit" data-submit>
                 ${mode === "signin" ? "Sign in" : "Create account"} ${icon("arrow-right")}</button>
             </form>
-            <button class="btn btn-ghost btn-block" data-demo style="margin-top:10px">${icon("sparkles")} Explore with a demo account</button>
-            <button class="btn btn-ghost btn-block" data-guest style="margin-top:6px">Continue as guest ${icon("arrow-right")}</button>
             <p class="tiny faint text-center" style="margin-top:16px">
               ${cloud ? icon("shield", 'style="width:13px;height:13px;display:inline;vertical-align:-2px"') + " Secured by Supabase — synced across devices."
                        : icon("lock", 'style="width:13px;height:13px;display:inline;vertical-align:-2px"') + " Private local account — stored only on this device."}
@@ -180,12 +178,6 @@ Apex.views = (function () {
         }
       });
 
-      Apex.util.qs("[data-demo]", container).addEventListener("click", async () => {
-        const creds = { name: "Demo Student", email: "demo@apex.test", password: "demo1234" };
-        try { await Apex.store.signIn(creds); }
-        catch { try { await Apex.store.signUp(creds); } catch (e) { Apex.ui.toast(e.message, "bad"); } }
-      });
-      Apex.util.qs("[data-guest]", container)?.addEventListener("click", () => Apex.store.signInGuest());
       Apex.util.qs("[data-forgot]", container)?.addEventListener("click", (e) => { e.preventDefault(); mode = "forgot"; render(); });
     };
 
