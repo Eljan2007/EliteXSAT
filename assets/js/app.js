@@ -160,6 +160,16 @@ Apex.app = (function () {
     if (Apex.engine.active()) return;
     const user = Apex.store.currentUser();
 
+    // Arrived via a password-reset link → force the "set a new password" screen,
+    // even though a temporary recovery session makes a user look signed in.
+    if (Apex.store.isRecovery && Apex.store.isRecovery()) {
+      document.body.classList.remove("has-sidebar");
+      headerEl.innerHTML = "";
+      appEl.className = "app-main";
+      await Apex.views.resetPassword(appEl);
+      return;
+    }
+
     if (!user) {
       document.body.classList.remove("has-sidebar");
       headerEl.innerHTML = "";

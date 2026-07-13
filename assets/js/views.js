@@ -105,6 +105,7 @@ Apex.views = (function () {
     let mode = "signin";
     const cloud = Apex.store.mode() === "supabase";
     const render = () => {
+      if (mode === "forgot") return renderForgot();
       container.innerHTML = `
       <div class="container" style="max-width:920px">
         <div class="grid grid-2" style="align-items:center;gap:48px">
@@ -134,8 +135,9 @@ Apex.views = (function () {
               <div class="field"><label class="label" for="f-email">Email</label>
                 <input class="input" id="f-email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required></div>
               <div class="field"><label class="label" for="f-pass">Password</label>
-                <input class="input" id="f-pass" name="password" type="password" autocomplete="${mode === "signin" ? "current-password" : "new-password"}" placeholder="At least 6 characters" required>
-                ${mode === "signup" ? '<span class="hint">Use 6+ characters.</span>' : ""}</div>
+                <input class="input" id="f-pass" name="password" type="password" autocomplete="${mode === "signin" ? "current-password" : "new-password"}" placeholder="At least 8 characters" required>
+                ${mode === "signup" ? '<span class="hint">Use 8+ characters.</span>' : ""}
+                ${mode === "signin" ? '<div style="text-align:right;margin-top:6px"><a href="#" class="tiny" data-forgot>Forgot password?</a></div>' : ""}</div>
               <div class="field-error hidden" data-err></div>
               <button class="btn btn-primary btn-lg btn-block" type="submit" data-submit>
                 ${mode === "signin" ? "Sign in" : "Create account"} ${icon("arrow-right")}</button>
@@ -184,9 +186,103 @@ Apex.views = (function () {
         catch { try { await Apex.store.signUp(creds); } catch (e) { Apex.ui.toast(e.message, "bad"); } }
       });
       Apex.util.qs("[data-guest]", container)?.addEventListener("click", () => Apex.store.signInGuest());
+      Apex.util.qs("[data-forgot]", container)?.addEventListener("click", (e) => { e.preventDefault(); mode = "forgot"; render(); });
+    };
+
+    /* ---- "Forgot password?" → request a reset email ---- */
+    const renderForgot = () => {
+      container.innerHTML = `
+      <div class="container" style="max-width:460px">
+        <div class="card card-pad reveal" style="box-shadow:var(--shadow-lg);margin-top:8vh">
+          <div class="brand" style="margin-bottom:18px">
+            <img class="brand-logo" src="${Apex.config.logo}" alt="${esc(Apex.config.brand)} logo" style="height:40px" />
+            <span class="brand-name">Elite<b>X</b>SAT</span>
+          </div>
+          <h1 class="h3" style="margin-bottom:8px">Reset your password</h1>
+          <p class="muted" style="margin-bottom:18px">Enter your account email and we'll send you a link to set a new password.</p>
+          <form data-forgot-form class="stack gap-3" novalidate>
+            <div class="field"><label class="label" for="fp-email">Email</label>
+              <input class="input" id="fp-email" name="email" type="email" autocomplete="email" placeholder="you@email.com" required></div>
+            <div class="field-error hidden" data-err></div>
+            <button class="btn btn-primary btn-lg btn-block" type="submit" data-submit>Send reset link ${icon("arrow-right")}</button>
+          </form>
+          <div class="hidden" data-sent style="margin-top:6px">
+            <div class="row gap-3" style="align-items:flex-start">
+              <span class="feature-icon fi-ok" style="width:38px;height:38px;border-radius:10px;margin:0;flex:none">${icon("check-circle")}</span>
+              <p style="margin:0">If an account exists for that email, a password-reset link is on its way. Check your inbox (and your spam folder).</p>
+            </div>
+          </div>
+          <button class="btn btn-ghost btn-block" data-back style="margin-top:12px">${icon("arrow-left")} Back to sign in</button>
+        </div>
+      </div>`;
+      hydrate(container);
+      Apex.util.qs("[data-back]", container).addEventListener("click", () => { mode = "signin"; render(); });
+      const form = Apex.util.qs("[data-forgot-form]", container);
+      const errEl = Apex.util.qs("[data-err]", container);
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        errEl.classList.add("hidden");
+        const email = (new FormData(form).get("email") || "").toString().trim();
+        if (!email) { errEl.textContent = "Please enter your email."; errEl.classList.remove("hidden"); return; }
+        const btn = Apex.util.qs("[data-submit]", container);
+        btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Sending…';
+        try { await Apex.store.requestPasswordReset({ email }); } catch (err) {}
+        // Show the SAME confirmation whether or not that email has an account (anti-enumeration).
+        form.classList.add("hidden");
+        Apex.util.qs("[data-sent]", container).classList.remove("hidden");
+      });
     };
 
     render();
+  }
+
+  /* ==================================================== PASSWORD RESET */
+  // Shown when the user opens the app via a reset link (Apex.store.isRecovery()).
+  async function resetPassword(container) {
+    container.innerHTML = `
+    <div class="container" style="max-width:460px">
+      <div class="card card-pad reveal" style="box-shadow:var(--shadow-lg);margin-top:8vh">
+        <div class="brand" style="margin-bottom:18px">
+          <img class="brand-logo" src="${Apex.config.logo}" alt="${esc(Apex.config.brand)} logo" style="height:40px" />
+          <span class="brand-name">Elite<b>X</b>SAT</span>
+        </div>
+        <h1 class="h3" style="margin-bottom:8px">Set a new password</h1>
+        <p class="muted" style="margin-bottom:18px">Choose a strong new password for your account.</p>
+        <form data-reset-form class="stack gap-3" novalidate>
+          <div class="field"><label class="label" for="rp-pass">New password</label>
+            <input class="input" id="rp-pass" name="password" type="password" autocomplete="new-password" placeholder="At least 8 characters" required>
+            <span class="hint">Use 8+ characters.</span></div>
+          <div class="field"><label class="label" for="rp-pass2">Confirm new password</label>
+            <input class="input" id="rp-pass2" name="password2" type="password" autocomplete="new-password" placeholder="Re-enter password" required></div>
+          <div class="field-error hidden" data-err></div>
+          <button class="btn btn-primary btn-lg btn-block" type="submit" data-submit>Update password ${icon("arrow-right")}</button>
+        </form>
+      </div>
+    </div>`;
+    hydrate(container);
+    const form = Apex.util.qs("[data-reset-form]", container);
+    const errEl = Apex.util.qs("[data-err]", container);
+    const showErr = (m) => { errEl.textContent = m; errEl.classList.remove("hidden"); };
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errEl.classList.add("hidden");
+      const fd = new FormData(form);
+      const p1 = (fd.get("password") || "").toString();
+      const p2 = (fd.get("password2") || "").toString();
+      if (p1.length < 8) return showErr("Password must be at least 8 characters.");
+      if (p1 !== p2) return showErr("The two passwords don't match.");
+      const btn = Apex.util.qs("[data-submit]", container);
+      btn.disabled = true; btn.innerHTML = '<span class="spinner"></span> Updating…';
+      try {
+        await Apex.store.updatePassword({ password: p1 });
+        Apex.store.endRecovery();
+        Apex.ui.toast("Password updated — you're signed in.", "ok", 4000);
+        Apex.app.go("#/tests");
+      } catch (err) {
+        showErr((err && err.message) || "Could not update your password. Please use the reset link again.");
+        btn.disabled = false; btn.innerHTML = "Update password " + icon("arrow-right");
+      }
+    });
   }
 
   /* ======================================================== DASHBOARD */
@@ -33472,7 +33568,7 @@ Apex.views = (function () {
   }
 
   return {
-    auth, dashboard, data: dashboard, tests: digitalExams,
+    auth, resetPassword, dashboard, data: dashboard, tests: digitalExams,
     questionBank, shuffled, reading, vocab, pricing, results, profile, reports,
   };
 })();

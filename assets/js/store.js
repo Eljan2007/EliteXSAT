@@ -12,6 +12,7 @@ Apex.store = (function () {
   const S = Apex.util.store;
 
   let _user = null;            // cached current user { id, name, email, targetScore }
+  let _recovery = false;       // true while the user arrived via a password-reset link
   const _listeners = new Set();
   const emit = () => _listeners.forEach((cb) => { try { cb(_user); } catch (e) {} });
 
@@ -58,6 +59,8 @@ Apex.store = (function () {
         S.set("session", u.id); _user = pub(u); emit(); return _user;
       },
       async signOut() { S.remove("session"); _user = null; emit(); },
+      async requestPasswordReset() { /* local mode has no email delivery — treated as a no-op success */ },
+      async updatePassword() { throw new Error("Password reset needs the cloud backend."); },
       async updateProfile(patch) {
         const all = users(); const u = all.find((x) => x.id === _user.id);
         if (!u) return;
@@ -133,7 +136,8 @@ Apex.store = (function () {
         sb = window.supabase.createClient(cfg.supabase.url, cfg.supabase.anonKey);
         const { data } = await sb.auth.getUser();
         _user = await profileFrom(data?.user);
-        sb.auth.onAuthStateChange(async (_evt, session) => {
+        sb.auth.onAuthStateChange(async (evt, session) => {
+          if (evt === "PASSWORD_RECOVERY") _recovery = true;   // arrived via reset link → show the "set new password" screen
           _user = await profileFrom(session?.user); emit();
         });
       },
@@ -153,7 +157,21 @@ Apex.store = (function () {
         if (error) throw new Error(authMsg(error));
         _user = await profileFrom(data.user); emit(); return _user;
       },
-      async signOut() { await sb.auth.signOut(); _user = null; emit(); },
+      async signOut() { await sb.auth.signOut(); _user = null; _recovery = false; emit(); },
+      // Send the reset email. We deliberately IGNORE the result and always resolve, so the UI can
+      // show the same message whether or not the email is registered (prevents account enumeration).
+      async requestPasswordReset({ email }) {
+        email = (email || "").trim();
+        const redirectTo = window.location.origin + window.location.pathname;  // e.g. https://elitexsat.com/app.html
+        try { await sb.auth.resetPasswordForEmail(email, { redirectTo }); } catch (e) {}
+      },
+      // Called from the reset screen (a temporary recovery session is already active).
+      async updatePassword({ password }) {
+        const { data, error } = await sb.auth.updateUser({ password });
+        if (error) throw new Error(authMsg(error));
+        _recovery = false;
+        _user = await profileFrom(data.user); emit(); return _user;
+      },
       async updateProfile(patch) {
         const row = {};
         if (patch.name != null) row.name = patch.name;
@@ -257,6 +275,10 @@ Apex.store = (function () {
     signIn: (p) => driver.signIn(p),
     signInGuest: () => (driver.signInGuest ? driver.signInGuest() : Promise.reject(new Error("Guest mode is only available in local mode."))),
     signOut: () => driver.signOut(),
+    requestPasswordReset: (p) => driver.requestPasswordReset(p),
+    updatePassword: (p) => driver.updatePassword(p),
+    isRecovery: () => _recovery,
+    endRecovery: () => { _recovery = false; },
     updateProfile: (p) => driver.updateProfile(p),
     listAttempts: () => driver.listAttempts(),
     getAttempt: (id) => driver.getAttempt(id),
