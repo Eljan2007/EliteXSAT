@@ -28,7 +28,7 @@ Apex.store = (function () {
     };
     const users = () => S.get("users", []);
     const saveUsers = (u) => S.set("users", u);
-    const pub = (u) => u && { id: u.id, name: u.name, email: u.email, targetScore: u.targetScore || 1400 };
+    const pub = (u) => u && { id: u.id, name: u.name, email: u.email, targetScore: u.targetScore || 1400, createdAt: u.createdAt || null };
 
     return {
       async init() {
@@ -65,6 +65,15 @@ Apex.store = (function () {
         const all = users(); const u = all.find((x) => x.id === _user.id);
         if (!u) return;
         Object.assign(u, patch); saveUsers(all); _user = pub(u); emit(); return _user;
+      },
+      async deleteAccount() {
+        const uid = _user ? _user.id : null;
+        if (uid) {
+          S.remove(`attempts.${uid}`);
+          S.remove(`progress.${uid}`);
+          saveUsers(users().filter((x) => x.id !== uid));
+        }
+        S.remove("session"); _user = null; emit();
       },
       _key: (base) => `${base}.${_user ? _user.id : "anon"}`,
       async listAttempts() {
@@ -122,7 +131,7 @@ Apex.store = (function () {
       let targetScore = 1400;
       const { data } = await sb.from("profiles").select("name,target_score").eq("id", authUser.id).maybeSingle();
       if (data) { name = data.name || name; targetScore = data.target_score || targetScore; }
-      return { id: authUser.id, name, email: authUser.email, targetScore };
+      return { id: authUser.id, name, email: authUser.email, targetScore, createdAt: authUser.created_at || null };
     };
 
     // Pull a human-readable message out of a Supabase error (never "{}" / "[object Object]").
@@ -141,6 +150,12 @@ Apex.store = (function () {
       async init() {
         if (!cfg.supabase.url || !cfg.supabase.anonKey)
           throw new Error("Supabase backend selected but url/anonKey are empty in config.js.");
+        // Detect a password-reset link (our ?mode=reset marker, or Supabase's #type=recovery)
+        // BEFORE the SDK consumes the URL, so route() shows the "set a new password" screen.
+        try {
+          const marker = window.location.search + window.location.hash;
+          if (/[?&]mode=reset\b/.test(marker) || /type=recovery/.test(marker)) _recovery = true;
+        } catch (e) {}
         await loadSdk();
         sb = window.supabase.createClient(cfg.supabase.url, cfg.supabase.anonKey);
         const { data } = await sb.auth.getUser();
@@ -171,7 +186,7 @@ Apex.store = (function () {
       // show the same message whether or not the email is registered (prevents account enumeration).
       async requestPasswordReset({ email }) {
         email = (email || "").trim();
-        const redirectTo = window.location.origin + window.location.pathname;  // e.g. https://elitexsat.com/app.html
+        const redirectTo = window.location.origin + window.location.pathname + "?mode=reset";  // marker → app shows the reset screen
         try { await sb.auth.resetPasswordForEmail(email, { redirectTo }); } catch (e) {}
       },
       // Called from the reset screen (a temporary recovery session is already active).
@@ -187,6 +202,20 @@ Apex.store = (function () {
         if (patch.targetScore != null) row.target_score = patch.targetScore;
         await sb.from("profiles").upsert({ id: _user.id, ...row });
         Object.assign(_user, patch); emit(); return _user;
+      },
+      // Remove the user's stored data, then sign out. Deleting the auth record itself
+      // requires a server-side function (best-effort RPC below); the client can always
+      // erase the user's own rows via RLS and end the session.
+      async deleteAccount() {
+        const uid = _user ? _user.id : null;
+        if (uid) {
+          try { await sb.from("attempts").delete().eq("user_id", uid); } catch (e) {}
+          try { await sb.from("progress").delete().eq("user_id", uid); } catch (e) {}
+          try { await sb.from("profiles").delete().eq("id", uid); } catch (e) {}
+          try { await sb.rpc("delete_user"); } catch (e) {}
+        }
+        try { await sb.auth.signOut(); } catch (e) {}
+        _user = null; _recovery = false; emit();
       },
       async listAttempts() {
         const { data, error } = await sb.from("attempts").select("payload").eq("user_id", _user.id).order("created_at", { ascending: false });
@@ -289,6 +318,7 @@ Apex.store = (function () {
     isRecovery: () => _recovery,
     endRecovery: () => { _recovery = false; },
     updateProfile: (p) => driver.updateProfile(p),
+    deleteAccount: () => driver.deleteAccount(),
     listAttempts: () => driver.listAttempts(),
     getAttempt: (id) => driver.getAttempt(id),
     saveAttempt: (a) => driver.saveAttempt(a),
