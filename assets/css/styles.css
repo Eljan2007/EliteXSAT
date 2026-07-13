@@ -791,6 +791,21 @@ ul { list-style: none; padding: 0; }
 .auth-note { margin-top: 16px; }
 @media (max-width: 480px) { .auth-brand .brand-logo { height: 50px; } }
 
+/* ===== SETTINGS (Account / Subscription / …) ===== */
+.set-page-head { display: flex; align-items: center; gap: 12px; margin-bottom: 26px; }
+.set-title-ico { display: inline-flex; }
+.set-title-ico svg { width: 30px; height: 30px; color: var(--ink); }
+.set-section { margin-bottom: 24px; }
+.set-head { display: flex; align-items: center; gap: 9px; margin: 0 0 12px 2px; color: var(--ink); }
+.set-head svg { width: 20px; height: 20px; flex: none; }
+.set-row { padding: 14px 0; border-bottom: 1px solid var(--border); }
+.set-row:first-child { padding-top: 2px; }
+.set-row:last-child { padding-bottom: 2px; border-bottom: 0; }
+.set-row .k { font-size: .82rem; color: var(--muted); margin-bottom: 4px; }
+.set-row .v { font-size: 1.05rem; color: var(--ink); word-break: break-word; }
+.plan-name { font-weight: 700; font-size: 1.12rem; color: var(--ink); }
+.set-div { border: 0; border-top: 1px solid var(--border); margin: 18px 0; }
+
 /* empty state */
 .empty { text-align: center; padding: 56px 24px; }
 .empty .big-icon { background: var(--surface-2); color: var(--faint); }

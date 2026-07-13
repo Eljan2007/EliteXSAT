@@ -941,12 +941,15 @@ Apex.views = (function () {
       const link = document.createElement("a");
       link.href = URL.createObjectURL(blob); link.download = "apex-sat-data.json"; link.click();
     });
-    Apex.util.qs("[data-clear]", container).addEventListener("click", async () => {
-      if (await Apex.ui.confirm({ title: "Delete all results?", message: "Every saved attempt will be permanently removed. This cannot be undone.", confirmText: "Delete everything", danger: true })) {
-        const list = await Apex.store.listAttempts();
-        for (const at of list) await Apex.store.deleteAttempt(at.id);
-        await Apex.store.clearProgress();
-        Apex.ui.toast("All results deleted.", "ok"); Apex.app.go("#/data");
+    Apex.util.qs("[data-delacc]", container).addEventListener("click", async () => {
+      if (await Apex.ui.confirm({ title: "Delete your account?", message: "This permanently removes your account and every saved result. This cannot be undone.", confirmText: "Delete account", danger: true })) {
+        try {
+          await Apex.store.deleteAccount();
+          Apex.ui.toast("Your account has been deleted.", "ok");
+          // store emits an auth change → app.js re-routes to the sign-in screen
+        } catch (err) {
+          Apex.ui.toast((err && err.message) || "Couldn't delete the account. Please try again.", "bad");
+        }
       }
     });
     Apex.ui.pillSeg(Apex.util.qs("[data-themeseg]", container), (v) => Apex.theme.set(v));

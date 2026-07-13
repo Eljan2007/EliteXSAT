@@ -16,6 +16,15 @@ echo     Publishing your latest EliteXSAT changes online
 echo   ==================================================
 echo.
 
+REM --- Auto-bump the ?v cache version so every visitor gets the newest files ---
+where node >nul 2>nul
+if %errorlevel%==0 (
+  node bump-version.js
+) else (
+  echo   [skip] Node not found - cache version NOT bumped this time.
+)
+echo.
+
 git add -A
 git commit -m "Update %date% %time%"
 git push origin main
