@@ -728,8 +728,10 @@ ul { list-style: none; padding: 0; }
 .nav-legend span { display: inline-flex; align-items: center; gap: 6px; }
 
 /* break / module-review screens */
-.center-screen { flex: 1; display: grid; place-items: center; padding: 30px; }
-.center-screen .inner { max-width: 560px; text-align: center; }
+.center-screen { flex: 1; min-height: 0; display: flex; flex-direction: column; align-items: center; overflow-y: auto; padding: 30px; }
+/* .inner centres via auto margins when it fits, and top-aligns + SCROLLS when it is taller than the
+   viewport — so on small/short screens the "Continue to next module" buttons are never clipped off. */
+.center-screen .inner { max-width: 560px; text-align: center; margin-block: auto; }
 .big-icon { width: 76px; height: 76px; border-radius: 20px; display: grid; place-items: center; margin: 0 auto 22px; }
 .big-icon svg { width: 38px; height: 38px; }
 
@@ -785,6 +787,16 @@ ul { list-style: none; padding: 0; }
 }
 .auth-sub { color: var(--muted); margin-bottom: 28px; }
 .auth-form { text-align: left; }
+.pass-wrap { position: relative; }
+.pass-wrap .input { padding-right: 46px; }
+.pass-eye {
+  position: absolute; top: 50%; right: 6px; transform: translateY(-50%);
+  width: 34px; height: 34px; display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 8px; color: var(--muted); background: transparent; cursor: pointer;
+  transition: color var(--t-fast), background var(--t-fast);
+}
+.pass-eye:hover { color: var(--ink); background: var(--surface-2); }
+.pass-eye svg { width: 18px; height: 18px; }
 .auth-switch { margin-top: 22px; color: var(--muted); font-size: .96rem; }
 .auth-switch a { color: var(--brand-600); font-weight: 600; }
 .auth-switch a:hover { text-decoration: underline; }
