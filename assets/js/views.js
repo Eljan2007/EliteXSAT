@@ -868,18 +868,20 @@ Apex.views = (function () {
     const memberSince = (_ms && !isNaN(_ms.getTime()))
       ? _ms.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "—";
     container.innerHTML = `
-    <div class="container" style="max-width:680px">
-      <div class="set-page-head reveal">
-        <span class="set-title-ico">${icon("settings")}</span>
-        <h1 class="h1" style="margin:0">Settings</h1>
-      </div>
-
-      <section class="set-section reveal">
+    <div class="container set-container" style="max-width:620px;margin-inline:auto">
+      <section class="set-section reveal" style="margin-top:6px">
         <div class="set-head">${icon("user")}<h2 class="h3" style="margin:0">Account</h2></div>
         <div class="card card-pad">
-          <div class="set-row"><div class="k">Name</div><div class="v">${esc(user.name)}</div></div>
+          <div class="set-row">
+            <div class="k">Name</div>
+            <div class="v" data-name-view>${esc(user.name)}</div>
+            <input class="input hidden" data-name-input type="text" value="${esc(user.name)}" autocomplete="name" placeholder="Your name" style="margin-top:4px">
+          </div>
           <div class="set-row"><div class="k">Email</div><div class="v">${esc(user.email)}</div></div>
           <div class="set-row"><div class="k">Member Since</div><div class="v">${memberSince}</div></div>
+          <div class="set-actions" style="margin-top:16px">
+            <button class="btn btn-outline btn-sm" data-edit-name>${icon("pencil")} Edit name</button>
+          </div>
         </div>
       </section>
 
@@ -892,31 +894,6 @@ Apex.views = (function () {
           </div>
           <p class="muted small" style="margin:8px 0 0;max-width:48ch">Full access to every full-length practice test, the question bank, and instant scoring — at no cost.</p>
           <p class="tiny faint" style="margin:14px 0 0">${icon("sparkles", 'style="width:13px;height:13px;display:inline;vertical-align:-2px"')} Membership plans are coming soon.</p>
-        </div>
-      </section>
-
-      <section class="set-section reveal">
-        <div class="set-head">${icon("pencil")}<h2 class="h3" style="margin:0">Preferences</h2></div>
-        <div class="card card-pad">
-          <form data-pform class="stack gap-3">
-            <div class="field"><label class="label" for="p-name">Display name</label>
-              <input class="input" id="p-name" name="name" value="${esc(user.name)}"></div>
-            <div class="field"><label class="label" for="p-target">Target score: <b data-tval>${user.targetScore}</b></label>
-              <input type="range" id="p-target" name="targetScore" min="400" max="1600" step="10" value="${user.targetScore}" style="accent-color:var(--brand-600)"></div>
-            <div><button class="btn btn-primary" type="submit">${icon("check")} Save changes</button></div>
-          </form>
-        </div>
-      </section>
-
-      <section class="set-section reveal">
-        <div class="set-head">${icon("palette")}<h2 class="h3" style="margin:0">Appearance</h2></div>
-        <div class="card card-pad">
-          <div class="row between wrap gap-3">
-            <p class="muted small" style="margin:0">Follow your device, or pick a look.</p>
-            <div class="pill-seg" data-themeseg>
-              ${[["system", "monitor", "System"], ["light", "sun", "Light"], ["dark", "moon", "Dark"]].map(([v, ic, lab]) => `<button class="pill-opt${Apex.theme.pref() === v ? " active" : ""}" data-v="${v}">${icon(ic)} ${lab}</button>`).join("")}
-            </div>
-          </div>
         </div>
       </section>
 
@@ -939,13 +916,36 @@ Apex.views = (function () {
       </section>
     </div>`;
 
-    const form = Apex.util.qs("[data-pform]", container);
-    const tval = Apex.util.qs("[data-tval]", container);
-    form.targetScore.addEventListener("input", (e) => { tval.textContent = e.target.value; });
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      await Apex.store.updateProfile({ name: form.name.value.trim(), targetScore: +form.targetScore.value });
-      Apex.ui.toast("Profile saved.", "ok");
+    // Inline "Edit name" → "Save" toggle in the Account card.
+    const nameView = Apex.util.qs("[data-name-view]", container);
+    const nameInput = Apex.util.qs("[data-name-input]", container);
+    const editBtn = Apex.util.qs("[data-edit-name]", container);
+    let editing = false;
+    const setEditing = (on) => {
+      editing = on;
+      nameView.classList.toggle("hidden", on);
+      nameInput.classList.toggle("hidden", !on);
+      editBtn.classList.toggle("btn-primary", on);
+      editBtn.classList.toggle("btn-outline", !on);
+      editBtn.innerHTML = on ? icon("check") + " Save" : icon("pencil") + " Edit name";
+      if (on) { nameInput.value = nameView.textContent; nameInput.focus(); nameInput.select(); }
+    };
+    const saveName = async () => {
+      const val = (nameInput.value || "").trim();
+      if (!val) { nameInput.focus(); return; }
+      editBtn.disabled = true;
+      try {
+        if (val !== nameView.textContent) await Apex.store.updateProfile({ name: val });
+        nameView.textContent = val;
+        Apex.ui.toast("Name updated.", "ok");
+      } catch (err) {
+        Apex.ui.toast((err && err.message) || "Couldn't update your name. Please try again.", "bad");
+      } finally { editBtn.disabled = false; setEditing(false); }
+    };
+    editBtn.addEventListener("click", () => { editing ? saveName() : setEditing(true); });
+    nameInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") { e.preventDefault(); saveName(); }
+      else if (e.key === "Escape") { e.preventDefault(); setEditing(false); }
     });
     Apex.util.qs("[data-signout]", container).addEventListener("click", () => Apex.store.signOut());
     Apex.util.qs("[data-export]", container).addEventListener("click", async () => {
@@ -965,7 +965,6 @@ Apex.views = (function () {
         }
       }
     });
-    Apex.ui.pillSeg(Apex.util.qs("[data-themeseg]", container), (v) => Apex.theme.set(v));
     hydrate(container);
   }
 
