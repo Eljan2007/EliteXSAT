@@ -38054,7 +38054,7 @@ Apex.views = (function () {
       const bodyHtml = p.body.split("\n\n").map((para) => `<p>${tokenizePara(para)}</p>`).join("");
       container.innerHTML = `
       <div class="reader">
-        <a class="nav-link reveal" data-back style="display:inline-flex;cursor:pointer;margin-bottom:12px">${icon("chevron-left")} Library</a>
+        <a class="nav-link" data-back style="display:inline-flex;cursor:pointer;margin-bottom:12px">${icon("chevron-left")} Library</a>
         <div class="card card-pad reveal" style="margin-bottom:18px">
           <div class="reader-head">
             <div class="reader-title">
@@ -38200,7 +38200,7 @@ Apex.views = (function () {
         const word = order[idx];
         container.innerHTML = `
         <div class="container" style="max-width:680px">
-          <a class="nav-link reveal" data-back style="display:inline-flex;cursor:pointer;margin-bottom:12px">${icon("chevron-left")} All levels</a>
+          <a class="nav-link" data-back style="display:inline-flex;cursor:pointer;margin-bottom:12px">${icon("chevron-left")} All levels</a>
           <div class="page-head reveal" style="margin-bottom:18px">
             <span class="badge" style="background:${col}1f;color:${col};border-color:${col}55">CEFR ${level}</span>
             <h1 class="h1" style="margin-top:8px">Flashcards</h1>
