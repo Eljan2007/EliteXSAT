@@ -19,6 +19,7 @@ Apex.engine = (function () {
   let breakTick = null;
   let mounted = false;
   let saveTimer = null;
+  let exitAsking = false;   // guards against stacking exit confirms (e.g. rapid Back presses)
 
   const api = { onFinish: null, onExit: null };
 
@@ -51,6 +52,18 @@ Apex.engine = (function () {
     buildSectionModules();
     enterModule(false);   // preserve initial/resumed questionIndex
     window.addEventListener("beforeunload", beforeUnload);
+    // Guard the browser Back button: push a history entry so a Back press is
+    // caught here (instead of silently swapping the page under the exam).
+    history.pushState({ examGuard: true }, "");
+    window.addEventListener("popstate", onPopState);
+  }
+
+  // Back button pressed while a test is live → keep the exam in place and ask
+  // to leave (same discard-and-delete flow as the logo / Exit button).
+  function onPopState() {
+    if (!active()) return;
+    history.pushState({ examGuard: true }, "");   // re-arm so we stay put while asking
+    requestExit();
   }
 
   const active = () => !!state;
@@ -64,7 +77,7 @@ Apex.engine = (function () {
     root.innerHTML = `
       <div class="engine-top qr-top">
         <div class="qr-top-left">
-          <button class="qr-logo" data-logo-home aria-label="EliteXSAT — save & exit"><img src="${Apex.config.logo}" alt="EliteXSAT" /></button>
+          <button class="qr-logo" data-logo-home aria-label="EliteXSAT — leave test"><img src="${Apex.config.logo}" alt="EliteXSAT" /></button>
           <div class="qr-top-titles">
             <div class="et-title" data-title></div>
             <button class="qr-directions" data-directions>Directions ${icon("chevron-down")}</button>
@@ -109,6 +122,7 @@ Apex.engine = (function () {
     try { Apex.calc.reset(); } catch (e) {}
     stopTick(); clearInterval(breakTick); breakTick = null;
     window.removeEventListener("beforeunload", beforeUnload);
+    window.removeEventListener("popstate", onPopState);
     document.removeEventListener("keydown", onKey);
     if (refs.root) refs.root.remove();
     document.body.style.overflow = "";
@@ -472,13 +486,17 @@ Apex.engine = (function () {
   }
 
   async function requestExit() {
+    if (exitAsking) return;   // don't stack dialogs on rapid Back presses
+    exitAsking = true;
     const ok = await Apex.ui.confirm({
-      title: "Save and exit?",
-      message: "Your progress is saved. You can resume this test later from your dashboard.",
-      confirmText: "Save & exit", cancelText: "Keep testing",
+      title: "Leave this test?",
+      message: "Your progress will not be saved. This attempt will be deleted and you won't be able to resume it.",
+      confirmText: "Leave & delete", cancelText: "Keep testing", danger: true,
     });
+    exitAsking = false;
     if (!ok) return;
-    persistNow();
+    // Abandoned mid-test → wipe any saved progress so nothing lingers or resumes.
+    try { await Promise.resolve(Apex.store.clearProgress()); } catch (e) {}
     window.removeEventListener("beforeunload", beforeUnload);
     teardown();
     if (api.onExit) api.onExit();
@@ -602,7 +620,7 @@ Apex.engine = (function () {
     menu.className = "qr-more-menu";
     menu.style.right = (window.innerWidth - r.right) + "px";
     menu.style.top = (r.bottom + 6) + "px";
-    menu.innerHTML = `${section().id === "math" ? `<button class="qr-more-item" data-ref>${icon("file-text")} Reference sheet</button>` : ""}<button class="qr-more-item" data-exit>${icon("log-out")} Save &amp; exit</button>`;
+    menu.innerHTML = `${section().id === "math" ? `<button class="qr-more-item" data-ref>${icon("file-text")} Reference sheet</button>` : ""}<button class="qr-more-item" data-exit>${icon("log-out")} Leave test</button>`;
     refs.root.appendChild(menu);
   }
   function saveAnnot(target) {

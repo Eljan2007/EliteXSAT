@@ -348,6 +348,7 @@ Apex.ui = (function () {
         m.close();
         toast("Thanks — your report was sent.");
       } catch (e) {
+        console.error("[report] send failed:", (e && e.message) || e);
         send.disabled = false;
         toast("Couldn't send the report — please try again.", "bad");
       }

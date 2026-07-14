@@ -237,11 +237,14 @@ Apex.store = (function () {
       },
       async clearProgress() { await sb.from("progress").delete().eq("user_id", _user.id); },
       async saveReport(r) {
-        const { data, error } = await sb.from("reports").insert({
+        // Insert only — do NOT chain .select(): a normal student can INSERT a report
+        // (RLS "submit report") but CANNOT read the reports table back (SELECT is
+        // admin-only), so requesting the inserted row would fail for non-admins.
+        const { error } = await sb.from("reports").insert({
           user_id: _user ? _user.id : null, email: _user ? _user.email : null, message: r.message, context: r.context || "",
-        }).select().maybeSingle();
+        });
         if (error) throw new Error(error.message);
-        return data;
+        return true;
       },
       async listReports() {
         const { data, error } = await sb.from("reports").select("*").order("created_at", { ascending: false });
