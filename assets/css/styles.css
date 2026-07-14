@@ -844,6 +844,18 @@ input[type="password"]::-webkit-credentials-auto-fill-button { visibility: hidde
 .plan-name { font-weight: 700; font-size: 1.12rem; color: var(--ink); }
 .set-div { border: 0; border-top: 1px solid var(--border); margin: 18px 0; }
 
+/* "How it works" explainer — stacked numbered paragraphs (Generate Mock) */
+.mock-how { display: flex; flex-direction: column; gap: 20px; }
+.mock-how-item { display: flex; align-items: flex-start; gap: 14px; }
+.mh-num {
+  flex: none; width: 28px; height: 28px; border-radius: 50%;
+  background: var(--surface-2); border: 1px solid var(--border); color: var(--brand-700);
+  font-weight: 700; font-size: .9rem; display: inline-flex; align-items: center; justify-content: center;
+}
+.mh-body { min-width: 0; }
+.mh-title { font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.mock-how-item p { margin: 0; color: var(--muted); line-height: 1.6; }
+
 /* empty state */
 .empty { text-align: center; padding: 56px 24px; }
 .empty .big-icon { background: var(--surface-2); color: var(--faint); }

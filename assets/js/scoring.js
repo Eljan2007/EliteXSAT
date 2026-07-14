@@ -95,6 +95,56 @@ Apex.scoring = (function () {
     };
   }
 
+  /* Weighted grading for the adaptive Shuffle Mock.
+     Each question carries a weight q._w (bigger for easy questions and Module 1,
+     smaller for hard questions and Module 2). A section's scaled score is
+       MIN + (earned weight / total weight) * (cap - MIN),
+     where cap = 800 on the HARD path and a lower value (e.g. 600) on the EASY
+     path (student routed to an easier 2nd module) — mirroring how the real
+     adaptive SAT caps the lower route. Same return shape as grade(). */
+  function gradeWeighted(questions, responses, opts) {
+    responses = responses || {};
+    opts = opts || {};
+    const capOf = (sid) => (opts.caps && opts.caps[sid]) || MAX;
+    const weightOf = (q) =>
+      (typeof q._w === "number" ? q._w : (opts.weightByQid && opts.weightByQid[q.id])) || 1;
+
+    const sections = {};   // sid → { earned, totalW, raw, total }
+    const domains = {};
+    const results = {};
+    let correctCount = 0;
+
+    questions.forEach((q) => {
+      const given = responses[q.id];
+      const answered = given != null && given !== "";
+      const correct = isCorrect(q, given);
+      results[q.id] = { correct, given: answered ? given : null, answer: q.answer, answered };
+      if (correct) correctCount++;
+
+      const w = weightOf(q);
+      const s = sections[q.section] = sections[q.section] || { earned: 0, totalW: 0, raw: 0, total: 0 };
+      s.total++; s.totalW += w;
+      if (correct) { s.raw++; s.earned += w; }
+
+      const dk = q.domain || "General";
+      domains[dk] = domains[dk] || { correct: 0, total: 0, section: q.section };
+      domains[dk].total++;
+      if (correct) domains[dk].correct++;
+    });
+
+    const sectionScores = {};
+    let total = 0;
+    Object.entries(sections).forEach(([sid, s]) => {
+      const cap = capOf(sid);
+      const frac = s.totalW ? s.earned / s.totalW : 0;
+      const scaled = Apex.util.clamp(Math.round((MIN + (cap - MIN) * frac) / 10) * 10, MIN, cap);
+      sectionScores[sid] = { raw: s.raw, total: s.total, scaled, cap, pct: s.total ? Math.round((s.raw / s.total) * 100) : 0 };
+      total += scaled;
+    });
+
+    return { total, correctCount, totalCount: questions.length, sections: sectionScores, domains, results };
+  }
+
   /* Encouraging one-line verdict based on total score */
   function verdict(total) {
     if (total >= 1500) return { label: "Outstanding", tone: "ok" };
@@ -104,5 +154,5 @@ Apex.scoring = (function () {
     return { label: "Just getting started", tone: "warn" };
   }
 
-  return { rawToScaled, isCorrect, grade, toNumber, verdict, MIN, MAX };
+  return { rawToScaled, isCorrect, grade, gradeWeighted, toNumber, verdict, MIN, MAX };
 })();

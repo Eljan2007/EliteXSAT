@@ -26,7 +26,7 @@ Apex.app = (function () {
   const NAV = [
     { name: "tests",   route: "#/tests",   label: "Digital SAT",       icon: "file-text", group: 1 },
     { name: "bank",    route: "#/bank",    label: "Question Bank",     icon: "layers",    group: 1 },
-    { name: "shuffle", route: "#/shuffle", label: "Shuffled Practice", icon: "shuffle",   group: 1 },
+    { name: "shuffle", route: "#/shuffle", label: "Generate Mock", icon: "shuffle",   group: 1 },
     { name: "data",    route: "#/data",    label: "Your Data",         icon: "bar-chart", group: 1 },
     { name: "reading", route: "#/reading", label: "Reading Article",   icon: "book-open", group: 2 },
     { name: "vocab",   route: "#/vocab",   label: "Vocabulary",        icon: "type",      group: 2 },

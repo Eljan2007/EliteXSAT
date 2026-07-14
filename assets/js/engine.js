@@ -439,7 +439,19 @@ Apex.engine = (function () {
     presented.forEach(({ sec, mod }) => (mod.questions || []).forEach((q) => {
       flat.push(q); order.push({ section: sec.id, moduleId: mod.id, qid: q.id });
     }));
-    const score = Apex.scoring.grade(flat, state.responses);
+    let score;
+    if (exam.scoreMode === "weighted" && Apex.scoring.gradeWeighted) {
+      // Shuffle Mock: weighted per-question scoring, with a lower cap on any section
+      // whose adaptive route landed on the EASY (Module-1 substitute) 2nd module.
+      const caps = {};
+      (exam.sections || []).forEach((s) => {
+        const r = state.routing && state.routing[s.id];
+        caps[s.id] = (r && r.variant === "easy") ? (exam.easyCap || 600) : 800;
+      });
+      score = Apex.scoring.gradeWeighted(flat, state.responses, { caps });
+    } else {
+      score = Apex.scoring.grade(flat, state.responses);
+    }
     const attempt = {
       id: "a_" + uid(),
       examId: exam.id,

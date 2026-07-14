@@ -37780,27 +37780,94 @@ Apex.views = (function () {
   }
 
   /* ==================================================== SHUFFLED PRACTICE */
+  /* ---- Shuffle Mock: assemble a brand-new ADAPTIVE full test from random modules
+     of the imported exams. RW & Math each: a random Module 1 (from 4 different tests
+     where possible); after Module 1 the engine routes to a HARD Module 2 (≥19 RW /
+     ≥15 Math correct) or, on the easy route, a Module 1 from ANOTHER test (we have no
+     dedicated easy Module 2). Weighted, capped scoring via exam.scoreMode="weighted". */
+  const SHUF_W = { 1: { easy: 3.0, medium: 2.2, hard: 1.5 }, 2: { easy: 2.0, medium: 1.5, hard: 1.0 } };
+  function shufModule(mod, secId, stage, variant, sid, counter) {
+    if (!mod) return null;
+    const wrow = SHUF_W[stage] || SHUF_W[1];
+    const questions = (mod.questions || []).map((q) => {
+      const c = JSON.parse(JSON.stringify(q));
+      c.id = sid + "-" + secId + "-s" + stage + "-q" + (++counter.n);
+      c._w = (wrow[c.difficulty] != null) ? wrow[c.difficulty] : wrow.medium;
+      delete c._examId;
+      return c;
+    });
+    const label = (secId === "rw" ? "Reading and Writing" : "Math") + " — Module " + stage;
+    const m = { id: sid + "-" + secId + "-" + (variant || ("m" + stage)), stage, questions,
+      name: label, minutes: mod.minutes || (secId === "rw" ? 32 : 35) };
+    if (variant) m.variant = variant;
+    if (secId === "math") m.calculator = true;
+    return m;
+  }
+  function shufMod(exam, secId, pred) {
+    const sec = (exam.sections || []).find((s) => s.id === secId);
+    return sec ? ((sec.modules || []).find(pred) || null) : null;
+  }
+  const shufIsM1 = (m) => (m.stage || 1) === 1;
+  const shufIsM2 = (m) => m.stage === 2;
+  function buildShuffleMock() {
+    const digital = Apex.bank.byType("digital").filter((e) =>
+      shufMod(e, "rw", shufIsM1) && shufMod(e, "rw", shufIsM2) &&
+      shufMod(e, "math", shufIsM1) && shufMod(e, "math", shufIsM2));
+    if (digital.length < 2) return null;
+    const p = shuffle(digital.slice());
+    const at = (i) => p[i % p.length];
+    const sid = "shuffle_" + Date.now().toString(36) + "_" + Math.floor(Math.random() * 1e6).toString(36);
+    const cnt = { n: 0 };
+    // 4 core modules from up to 4 different tests
+    const rwM1s = at(0), rwM2s = at(1), maM1s = at(2), maM2s = at(3);
+    // easy substitutes = a Module 1 from a DIFFERENT test than that section's Module 1
+    const rwEzs = p.find((e) => e !== rwM1s) || rwM1s;
+    const maEzs = p.find((e) => e !== maM1s) || maM1s;
+    const rw1 = shufModule(shufMod(rwM1s, "rw", shufIsM1), "rw", 1, null, sid, cnt);
+    const rwH = shufModule(shufMod(rwM2s, "rw", shufIsM2), "rw", 2, "hard", sid, cnt);
+    const rwE = shufModule(shufMod(rwEzs, "rw", shufIsM1), "rw", 2, "easy", sid, cnt);
+    const ma1 = shufModule(shufMod(maM1s, "math", shufIsM1), "math", 1, null, sid, cnt);
+    const maH = shufModule(shufMod(maM2s, "math", shufIsM2), "math", 2, "hard", sid, cnt);
+    const maE = shufModule(shufMod(maEzs, "math", shufIsM1), "math", 2, "easy", sid, cnt);
+    if (!rw1 || !rwH || !rwE || !ma1 || !maH || !maE) return null;
+    return {
+      id: sid, title: "Shuffle Mock", type: "shuffle", scoreMode: "weighted", easyCap: 600,
+      description: "A brand-new adaptive full-length test, assembled at random from your exams.",
+      sections: [
+        { id: "rw",   adaptive: true, routeThreshold: 19, modules: [rw1, rwH, rwE] },
+        { id: "math", adaptive: true, routeThreshold: 15, modules: [ma1, maH, maE] },
+      ],
+    };
+  }
+
   async function shuffled(container) {
     container.innerHTML = `
-    <div class="container" style="max-width:680px">
-      <div class="page-head reveal"><span class="eyebrow">${icon("shuffle", 'style="width:14px;height:14px;display:inline;vertical-align:-2px"')} Shuffled Practice</span>
-        <h1 class="h1" style="margin-top:6px">Mixed-question warm-up</h1>
-        <p class="lead">A random mix from the whole bank — great for keeping every skill sharp.</p></div>
-      <div class="card card-pad reveal">
-        <div class="field" style="margin-bottom:18px"><span class="label">Section</span>
-          <div class="pill-seg" data-sec><button class="pill-opt active" data-v="all">All</button><button class="pill-opt" data-v="rw">Reading &amp; Writing</button><button class="pill-opt" data-v="math">Math</button></div></div>
-        <div class="field" style="margin-bottom:24px"><span class="label">How many questions</span>
-          <div class="pill-seg" data-len><button class="pill-opt" data-v="5">5</button><button class="pill-opt active" data-v="10">10</button><button class="pill-opt" data-v="20">20</button></div></div>
-        <button class="btn btn-primary btn-lg btn-block" data-go>${icon("play")} Start shuffled practice</button>
+    <div class="container" style="max-width:760px;margin-inline:auto">
+      <div class="page-head reveal" style="text-align:center">
+        <span class="eyebrow">${icon("shuffle", 'style="width:14px;height:14px;display:inline;vertical-align:-2px"')} Generate Mock</span>
+        <h1 class="h1" style="margin-top:6px">Generate a mock test</h1>
+        <p class="lead">A brand-new full-length adaptive SAT, assembled at random from your exams.</p></div>
+
+      <div class="card card-pad reveal" style="margin-bottom:20px;text-align:center">
+        <h3 class="h3" style="margin:0 0 20px">Full adaptive mock <span class="badge badge-brand" style="vertical-align:2px">Adaptive</span></h3>
+        <button class="btn btn-primary btn-lg" data-mock>${icon("shuffle")} Generate mock</button>
+      </div>
+
+      <div class="card card-pad reveal" style="margin-bottom:20px">
+        <div class="set-head" style="margin-bottom:20px">${icon("info")}<h3 class="h3" style="margin:0">How it works</h3></div>
+        <div class="mock-how">
+          <div class="mock-how-item"><span class="mh-num">1</span><div class="mh-body"><div class="mh-title">Random build</div><p>Each mock pulls a Reading &amp; Writing and a Math <b>Module&nbsp;1</b> from up to <b>4 different tests</b>, so no two mocks are ever alike.</p></div></div>
+          <div class="mock-how-item"><span class="mh-num">2</span><div class="mh-body"><div class="mh-title">Adaptive Module&nbsp;2</div><p>Your Module&nbsp;1 score decides Module&nbsp;2, exactly like the real SAT: get <b>19 or more</b> right in Reading &amp; Writing (or <b>15 or more</b> in Math) to unlock the <b>Hard</b> module. Below that, you get an easier module.</p></div></div>
+          <div class="mock-how-item"><span class="mh-num">3</span><div class="mh-body"><div class="mh-title">Smart scoring</div><p>Easier questions and Module&nbsp;1 are worth <b>more</b> points; hard questions are worth <b>less</b>. Each section is scaled to the SAT range of <b>200&ndash;800</b>.</p></div></div>
+          <div class="mock-how-item"><span class="mh-num">4</span><div class="mh-body"><div class="mh-title">Real cap</div><p>The easier path tops out around <b>600</b> per section, while the hard path can reach <b>800</b> &mdash; mirroring how the adaptive SAT limits the lower route.</p></div></div>
+        </div>
       </div>
     </div>`;
-    let sec = "all", len = 10;
-    Apex.ui.pillSeg(Apex.util.qs("[data-sec]", container), (v) => (sec = v));
-    Apex.ui.pillSeg(Apex.util.qs("[data-len]", container), (v) => (len = +v));
-    Apex.util.qs("[data-go]", container).addEventListener("click", () => {
-      let pool = allQuestions();
-      if (sec !== "all") pool = pool.filter((q) => q.section === sec);
-      runPractice(container, { questions: shuffle(pool).slice(0, len), returnHash: "#/shuffle" });
+    Apex.util.qs("[data-mock]", container).addEventListener("click", () => {
+      const exam = buildShuffleMock();
+      if (!exam) { Apex.ui.toast("Need at least 2 full-length exams to build a mock.", "bad"); return; }
+      Apex.bank.register(exam);
+      Apex.app.startExam(exam.id);
     });
     hydrate(container);
   }
