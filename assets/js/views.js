@@ -40277,7 +40277,7 @@ Apex.views = (function () {
     container.innerHTML = `
     <div class="container" style="max-width:760px;margin-inline:auto">
       <div class="page-head reveal" style="text-align:center;margin-bottom:26px">
-        <span class="eyebrow" style="font-size:1.85rem;letter-spacing:.09em">${icon("shuffle", 'style="width:24px;height:24px;display:inline;vertical-align:-4px"')} Generate Mock</span>
+        <h1 class="qb-h1 qb-h1-brand">${icon("shuffle", 'style="width:26px;height:26px;display:inline;vertical-align:-4px"')} Generate Mock</h1>
       </div>
 
       <div class="card card-pad reveal" style="margin-bottom:20px;text-align:center">
@@ -40710,7 +40710,7 @@ Apex.views = (function () {
     container.innerHTML = `
     <div class="container">
       <div class="page-head text-center reveal" style="max-width:640px;margin-inline:auto;margin-bottom:26px">
-        <span class="eyebrow" style="font-size:1.85rem;letter-spacing:.09em">Pricing</span>
+        <h1 class="qb-h1 qb-h1-brand">${icon("tag", 'style="width:26px;height:26px;display:inline;vertical-align:-4px"')} Pricing</h1>
       </div>
       <div class="ptable-wrap reveal">
         <table class="ptable">
