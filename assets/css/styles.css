@@ -720,6 +720,13 @@ ul { list-style: none; padding: 0; }
   max-height: 258px; overflow-y: auto; overflow-x: hidden;
   padding: 8px 10px 8px 6px; scrollbar-width: thin; scrollbar-gutter: stable;
 }
+/* Module-review navigator: fixed 9 per row, centered, no inner scroll —
+   R&W 27 → 3 tidy rows of 9; Math 22 → 9 + 9 + a centered 4. */
+.qbank-runner .nav-grid.nav-review {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+  max-width: 500px; margin: 14px auto 0; max-height: none; overflow: visible; padding: 0;
+}
+.qbank-runner .nav-grid.nav-review .nav-cell { width: 46px; height: 46px; aspect-ratio: auto; flex: 0 0 auto; }
 .qbank-runner .nav-cell { font-size: .8rem; border-radius: 8px; border-width: 1.5px; overflow: visible; }
 .qbank-runner .nav-cell.nc-easy   { background: var(--ok-bg);   border-color: var(--ok);   color: var(--ok); }
 .qbank-runner .nav-cell.nc-medium { background: var(--warn-bg); border-color: var(--warn); color: var(--warn); }

@@ -185,7 +185,13 @@ Apex.engine = (function () {
       state.routing[sec.id] = { correct, threshold, variant: m2.variant || null, moduleId: m2.id };
     }
   }
-  const breakSeconds = () => (state.exam.type === "full" ? (Apex.config.breakMinutes || 0) : 0) * 60;
+  // Full-length tests (digital SAT sims, full practice tests, and the shuffle mock)
+  // get the real ~10-min break between Reading & Writing and Math; short drills don't.
+  const breakSeconds = () => {
+    const t = state.exam.type;
+    const fullLength = (t === "full" || t === "digital" || t === "shuffle");
+    return (fullLength ? (Apex.config.breakMinutes || 10) : 0) * 60;
+  };
 
   function enterModule(resetIndex = true) {
     state.phase = "test";
@@ -354,15 +360,14 @@ Apex.engine = (function () {
       : "Continue to next module";
     refs.stageInner.innerHTML = `
       <div class="center-screen view-enter"><div class="inner" style="max-width:600px">
-        <div class="big-icon" style="background:var(--brand-50);color:var(--brand-600)">${icon("list")}</div>
         <h2 class="h2">You've reached the end of ${esc(module_().name || "this module")}</h2>
         <p class="lead" style="margin:10px 0 22px">Review your answers below. You can jump back to any question${flagged ? `, including the <b>${flagged}</b> you marked for review` : ""}.</p>
         <div class="row gap-3 center" style="margin-bottom:22px">
           <span class="badge badge-ok">${icon("check")} ${answered} answered</span>
-          ${unanswered ? `<span class="badge badge-bad">${icon("alert")} ${unanswered} unanswered</span>` : ""}
-          ${flagged ? `<span class="badge badge-warn">${icon("flag")} ${flagged} marked</span>` : ""}
+          <span class="badge badge-bad">${icon("alert")} ${unanswered} unanswered</span>
+          <span class="badge badge-warn">${icon("flag")} ${flagged} marked</span>
         </div>
-        <div class="panel card-pad"><div class="nav-grid">${cells}</div></div>
+        <div class="panel card-pad"><div class="nav-grid nav-review">${cells}</div></div>
         <div class="row gap-2 center" style="margin-top:24px">
           <button class="btn btn-outline" data-review-back>${icon("chevron-left")} Back to questions</button>
           <button class="btn btn-primary btn-lg" data-continue>${nextLabel} ${icon("arrow-right")}</button>
