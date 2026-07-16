@@ -40703,30 +40703,23 @@ Apex.views = (function () {
       ["Goal tracking to test day",          [0, 0, 1]],
     ];
     const yes = icon("check"), no = icon("x");
-    // one self-contained window per plan
-    const cards = PLANS.map((p, i) => {
-      const feats = FEATURES.map(([label, inc]) => {
-        const on = inc[i];
-        return `<li class="pf ${on ? "on" : "off"}">${on ? yes : no}<span>${label}</span></li>`;
-      }).join("");
-      return `<div class="pcard pcard-${p.key} reveal">
-        <div class="pcard-head">
-          <span class="pcard-name">${p.name}</span>
-          <span class="pcard-price">${p.price}<small>/mo</small></span>
-        </div>
-        <ul class="pcard-feats">${feats}</ul>
-        <a class="btn ${p.cta} pcard-cta" href="#/account">Get started</a>
-      </div>`;
-    }).join("");
+    // comparison table: shared feature labels on the left, each plan column its own window
+    const head = PLANS.map((p) => `<th class="pt-plan pt-col pt-col-${p.key}"><span class="pt-pname">${p.name}</span><span class="pt-price">${p.price}<small>/mo</small></span></th>`).join("");
+    const rows = FEATURES.map(([label, inc]) => `<tr><th scope="row" class="pt-feat">${label}</th>${inc.map((v, i) => `<td class="pt-cell pt-col pt-col-${PLANS[i].key} ${v ? "pt-yes" : "pt-no"}">${v ? yes : no}</td>`).join("")}</tr>`).join("");
+    const foot = PLANS.map((p) => `<td class="pt-cta pt-col pt-col-${p.key}"><a class="btn ${p.cta}" href="#/account">Get started</a></td>`).join("");
     container.innerHTML = `
     <div class="container">
-      <div class="page-head text-center reveal" style="max-width:640px;margin-inline:auto">
-        <span class="eyebrow">Pricing</span>
-        <h1 class="h1" style="margin:8px 0 12px">Simple plans for every goal</h1>
-        <p class="lead">Pick the plan that matches your goal.</p>
+      <div class="page-head text-center reveal" style="max-width:640px;margin-inline:auto;margin-bottom:26px">
+        <span class="eyebrow" style="font-size:1.85rem;letter-spacing:.09em">Pricing</span>
       </div>
-      <div class="pcards">${cards}</div>
-      <p class="tiny faint text-center" style="margin-top:22px">Plans are illustrative for this demo &mdash; no payment is processed.</p>
+      <div class="ptable-wrap reveal">
+        <table class="ptable">
+          <thead><tr><th scope="col" class="pt-corner">Compare plans</th>${head}</tr></thead>
+          <tbody>${rows}</tbody>
+          <tfoot><tr><td class="pt-corner"></td>${foot}</tr></tfoot>
+        </table>
+      </div>
+      <p class="tiny faint text-center" style="margin-top:20px">Plans are illustrative for this demo &mdash; no payment is processed.</p>
     </div>`;
     hydrate(container);
   }
