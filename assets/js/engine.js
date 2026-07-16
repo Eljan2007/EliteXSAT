@@ -391,7 +391,7 @@ Apex.engine = (function () {
           <div class="big-icon" style="background:var(--ok-bg);color:var(--ok)">${icon("check-circle")}</div>
           <h2 class="h2">Section complete</h2>
           <p class="lead" style="margin:10px 0 6px">Nice work. Next up: <b>${esc(nextSec.name)}</b>.</p>
-          ${secs ? `<p class="muted">Take a short break. The next section begins automatically when the timer ends.</p>
+          ${secs ? `<p class="muted break-note">Take a short break. The next section begins automatically when the timer ends.</p>
             <div class="timer" style="font-size:2rem;margin:22px auto;display:inline-flex">${icon("timer")}<span data-break>${fmtTime(left)}</span></div><br>` : `<p class="muted">Take a breath whenever you're ready.</p><div style="height:18px"></div>`}
           <button class="btn btn-primary btn-lg" data-section-next>${secs ? "Skip break &amp; continue" : "Continue"} ${icon("arrow-right")}</button>
         </div></div>`;
@@ -538,6 +538,7 @@ Apex.engine = (function () {
       const t = e.target;
       if (!t.closest(".annot-pop") && !t.closest("mark.annot")) qs(".annot-pop", root)?.remove();
       if (t.closest(".annot-pop")) return;
+      if (t.closest(".annot-toolbar")) return;
       if (!t.closest(".qr-more-menu") && !t.closest("[data-more]")) qs(".qr-more-menu", root)?.remove();
       if (!t.closest(".qr-bg-menu") && !t.closest("[data-bg]")) qs(".qr-bg-menu", root)?.remove();
       if (t.closest("[data-logo-home]")) return requestExit();
@@ -585,20 +586,24 @@ Apex.engine = (function () {
       document.addEventListener("mousemove", onMove); document.addEventListener("mouseup", onUp);
     });
 
-    // annotation: when Annotate is on, selecting text in the passage/prompt highlights it
-    root.addEventListener("mouseup", () => {
+    // Close the annotate toolbar whenever a new gesture starts elsewhere.
+    root.addEventListener("mousedown", (e) => {
+      if (!e.target.closest(".annot-toolbar")) qs(".annot-toolbar", root)?.remove();
+    });
+    // annotation: when Annotate is on, selecting text opens a small toolbar above the
+    // selection to pick a highlight colour (blue / light-red / green) or an underline
+    // style (straight / wavy).
+    root.addEventListener("mouseup", (e) => {
       if (state.dragging || state.annotate !== true) return;
+      if (e.target.closest(".annot-toolbar")) return;
       const sel = window.getSelection();
-      if (!sel || sel.isCollapsed || !sel.rangeCount) return;
+      if (!sel || sel.isCollapsed || !sel.rangeCount) { qs(".annot-toolbar", root)?.remove(); return; }
       const range = sel.getRangeAt(0);
       const node = range.commonAncestorContainer;
       const host = node.nodeType === 1 ? node : node.parentElement;
       const target = host && host.closest("[data-annot-target]");
-      if (!target || !target.contains(range.endContainer)) return;
-      try { const m = document.createElement("mark"); m.className = "annot"; range.surroundContents(m); }
-      catch (err) { const m = document.createElement("mark"); m.className = "annot"; m.appendChild(range.extractContents()); range.insertNode(m); }
-      sel.removeAllRanges();
-      saveAnnot(target);
+      if (!target || !target.contains(range.endContainer)) { qs(".annot-toolbar", root)?.remove(); return; }
+      showAnnotToolbar(range, target);
     });
 
     root.addEventListener("input", (e) => {
@@ -659,6 +664,46 @@ Apex.engine = (function () {
       parent.removeChild(mk); parent.normalize();
       pop.remove(); saveAnnot(target);
     });
+  }
+
+  // Floating toolbar shown above a fresh text selection: pick a highlight colour or
+  // an underline style. The chosen style is baked into the mark's class so it persists.
+  function showAnnotToolbar(range, target) {
+    qs(".annot-toolbar", refs.root)?.remove();
+    const savedRange = range.cloneRange();
+    const rect = range.getBoundingClientRect();
+    const ulStraight = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v6a5 5 0 0 0 10 0V4"/><line x1="6" y1="20" x2="18" y2="20"/></svg>`;
+    const ulWavy = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 4v6a5 5 0 0 0 10 0V4"/><path d="M5 19c1-1.6 3-1.6 4 0s3 1.6 4 0 3-1.6 4 0"/></svg>`;
+    const tb = document.createElement("div");
+    tb.className = "annot-toolbar";
+    tb.innerHTML =
+      `<button class="atb-color atb-blue" data-cls="hl-blue" aria-label="Blue highlight" title="Blue"></button>` +
+      `<button class="atb-color atb-red" data-cls="hl-red" aria-label="Light red highlight" title="Light red"></button>` +
+      `<button class="atb-color atb-green" data-cls="hl-green" aria-label="Green highlight" title="Green"></button>` +
+      `<span class="atb-div"></span>` +
+      `<button class="atb-ul" data-cls="ul-straight" aria-label="Underline" title="Underline">${ulStraight}</button>` +
+      `<button class="atb-ul" data-cls="ul-wavy" aria-label="Wavy underline" title="Wavy underline">${ulWavy}</button>`;
+    refs.root.appendChild(tb);
+    const tbr = tb.getBoundingClientRect();
+    const cx = Math.max(tbr.width / 2 + 8, Math.min(rect.left + rect.width / 2, window.innerWidth - tbr.width / 2 - 8));
+    let top = rect.top - tbr.height - 10;
+    if (top < 8) { top = rect.bottom + 12; tb.classList.add("below"); }
+    tb.style.left = (cx - tbr.width / 2) + "px";   // centre on cx without a transform (the entrance animation owns transform)
+    tb.style.top = top + "px";
+    tb.addEventListener("mousedown", (e) => e.preventDefault());   // keep the selection alive
+    tb.addEventListener("click", (e) => {
+      const b = e.target.closest("[data-cls]"); if (!b) return;
+      applyAnnot(savedRange, target, b.dataset.cls);
+      tb.remove();
+    });
+  }
+  function applyAnnot(range, target, cls) {
+    const m = document.createElement("mark");
+    m.className = "annot " + cls;
+    try { range.surroundContents(m); }
+    catch (err) { m.appendChild(range.extractContents()); range.insertNode(m); }
+    const sel = window.getSelection(); if (sel) sel.removeAllRanges();
+    saveAnnot(target);
   }
 
   function onKey(e) {
