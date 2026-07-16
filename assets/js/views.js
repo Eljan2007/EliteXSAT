@@ -40276,10 +40276,9 @@ Apex.views = (function () {
   async function shuffled(container) {
     container.innerHTML = `
     <div class="container" style="max-width:760px;margin-inline:auto">
-      <div class="page-head reveal" style="text-align:center">
-        <span class="eyebrow">${icon("shuffle", 'style="width:14px;height:14px;display:inline;vertical-align:-2px"')} Generate Mock</span>
-        <h1 class="h1" style="margin-top:6px">Generate a mock test</h1>
-        <p class="lead">A brand-new full-length adaptive SAT, assembled at random from your exams.</p></div>
+      <div class="page-head reveal" style="text-align:center;margin-bottom:26px">
+        <span class="eyebrow" style="font-size:1.85rem;letter-spacing:.09em">${icon("shuffle", 'style="width:24px;height:24px;display:inline;vertical-align:-4px"')} Generate Mock</span>
+      </div>
 
       <div class="card card-pad reveal" style="margin-bottom:20px;text-align:center">
         <h3 class="h3" style="margin:0 0 20px">Full adaptive mock <span class="badge badge-brand" style="vertical-align:2px">Adaptive</span></h3>
