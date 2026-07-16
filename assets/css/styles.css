@@ -624,7 +624,7 @@ ul { list-style: none; padding: 0; }
 .sr-ks { margin-bottom: 26px; border: 1px solid var(--border); border-radius: var(--r-lg); background: var(--surface); padding: 22px 26px; }
 .sr-ks-title { font-size: 1.05rem; font-weight: 800; letter-spacing: .03em; margin: 0 0 4px; }
 .sr-ks-sub { color: var(--muted); font-size: .9rem; margin-bottom: 18px; }
-.sr-ks-grid { display: grid; grid-template-columns: max-content max-content; justify-content: space-between; gap: 28px 56px; }
+.sr-ks-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px 36px; }
 /* Math (right) column hugs the window's right edge: right-align its content and move the count BEFORE the bricks so the LAST brick touches the edge */
 .sr-ks-col:last-child { text-align: right; }
 .sr-ks-col:last-child .sr-boxes { justify-content: flex-end; }
@@ -634,9 +634,9 @@ ul { list-style: none; padding: 0; }
 .sr-dom { margin-bottom: 16px; }
 .sr-dom-name { font-weight: 700; }
 .sr-dom-meta { font-size: .82rem; color: var(--muted); margin: 1px 0 7px; }
-/* one box per question, all on ONE line (no ragged wrapping) + the count at the end */
-.sr-boxes { display: flex; align-items: center; gap: 6px; flex-wrap: nowrap; }
-.sr-box { width: 28px; height: 10px; border: 1.5px solid var(--ink); border-radius: 3px; background: transparent; flex: 0 0 auto; }
+/* one box per question; wraps onto multiple lines so wide domains never overflow the card */
+.sr-boxes { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.sr-box { width: 22px; height: 10px; border: 1.5px solid var(--ink); border-radius: 3px; background: transparent; flex: 0 0 auto; }
 .sr-box.fill { background: var(--ink); }
 .sr-dom-frac { font-size: .8rem; font-weight: 700; color: var(--muted); margin-left: 6px; flex: 0 0 auto; white-space: nowrap; }
 .sr-dom-none { font-size: .82rem; color: var(--faint); }
@@ -1305,6 +1305,9 @@ mark.annot.ul-straight.has-note, mark.annot.ul-wavy.has-note { box-shadow: none;
 .qr-tool2:hover { background: var(--surface-2); }
 .qr-tool2.on { color: var(--brand-600); }
 .qr-tool2 svg { width: 20px; height: 20px; }
+/* Annotate ON: fill the pen red + a red pill, so the active state is unmistakable. */
+.qr-tool2[data-annotate].on { color: var(--brand-600); background: rgba(209, 29, 43, .13); }
+.qr-tool2[data-annotate].on svg { fill: var(--brand-600); stroke: var(--brand-600); }
 @media (max-width: 720px) { .qr-tool2 span { display: none; } }
 
 /* pane expand tools */
