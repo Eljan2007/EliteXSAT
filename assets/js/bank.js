@@ -41,8 +41,32 @@ Apex.bank = (function () {
     return count;
   }
 
+  // Forms that share a sitting (same `title`) are lettered A, B, C… in registration order.
+  // There is no US/International split: a date's forms are one alphabetical run.
+  const versionSeq = {};
+  function letterFor(title) {
+    const n = versionSeq[title] || 0;
+    versionSeq[title] = n + 1;
+    return String.fromCharCode(65 + n);   // A, B, C, …
+  }
+
   function register(exam) {
     const count = validate(exam);
+    if (exam.type === "digital" && exam.title) {
+      exam.version = letterFor(exam.title);
+      delete exam.region;
+      // Legacy blurbs still carry the old region ("International · Verbal Hard") and the old
+      // hard-coded version letter, which no longer matches the letter assigned above. Strip both:
+      // the region split is gone, and the version is shown by the badge.
+      const REGION = "International|Int'l|Int|US|North American|North America|Asia[- ]?Pacific";
+      const clean = (s) => String(s || "")
+        .replace(new RegExp("^\\s*(?:" + REGION + ")\\s*[·\\-–—:]\\s*", "i"), "")        // "International · …"
+        .replace(new RegExp("\\b(?:" + REGION + ")\\s+(?=(?:\\w+\\s+)*form\\b)", "gi"), "") // "US prediction form"
+        .replace(/[,;]?\s*·?\s*Version\s+[A-Z]\b/gi, "")                                   // stale version letter
+        .replace(/\s{2,}/g, " ").replace(/^\s*[·\-–—,]\s*/, "").trim();
+      if (exam.tagline) exam.tagline = clean(exam.tagline);
+      if (exam.description) exam.description = clean(exam.description);
+    }
     // stamp questions with section + index globally
     exam.sections.forEach((sec) => {
       (sec.modules || []).forEach((mod) => {
@@ -109,12 +133,10 @@ Apex.bank = (function () {
   const isAdaptive = (exam) => (exam.sections || []).some(sectionIsAdaptive);
 
   // The test's display name. Digital exams show their month/year (from `title`) plus the
-  // region + version letter, e.g. "March 2025 International B"; everything else uses its title.
+  // version letter, e.g. "March 2026 Version B"; everything else uses its title.
   function fullName(exam) {
     if (!exam) return "";
-    if (exam.region && exam.version) {
-      return (exam.title ? exam.title + " " : "") + exam.region + " " + exam.version;
-    }
+    if (exam.version) return (exam.title ? exam.title + " " : "") + "Version " + exam.version;
     return exam.title || "";
   }
 

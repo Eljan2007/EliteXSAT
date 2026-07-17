@@ -74,9 +74,9 @@ Apex.views = (function () {
     const vColor = v.tone === "ok" ? "var(--ok)" : v.tone === "warn" ? "var(--warn)" : "var(--brand-600)";
     const sec = a.score.sections || {};
     const exam = Apex.bank.get(a.examId);
-    // Same badges as the exam catalog card: "Version X" + region (US / Int'l).
+    // Same badge as the exam catalog card: "Version X".
     const verBadge = exam && exam.version ? `<span class="badge">Version ${esc(exam.version)}</span>` : "";
-    const regBadge = exam && exam.region ? `<span class="badge badge-rw">${/^us/i.test(exam.region) ? "US" : "Int'l"}</span>` : "";
+    const regBadge = "";
     const ic = exam ? (exam.rwOnly ? "book-open" : exam.mathOnly ? "calculator" : "file-text") : (a.type === "full" ? "file-text" : "compass");
     // R&W + Math scaled section scores (each 200–800) that add up to the total.
     const chip = (lab, val, hi) => val == null ? "" : `<div class="score-chip${hi ? " score-chip-total" : ""}">
@@ -533,14 +533,6 @@ Apex.views = (function () {
     const stats = await Apex.store.getStats();
     const lastByExam = {};
     stats.completed.forEach((a) => { if (!lastByExam[a.examId]) lastByExam[a.examId] = a; });
-    let region = "all";
-
-    const regionTag = (r) => {
-      if (!r) return "";
-      const us = /^us/i.test(r);
-      // both region badges use the same purple treatment (per user: color Int'l like US)
-      return `<span class="badge badge-rw">${us ? "US" : "Int'l"}</span>`;
-    };
     function dexCard(exam) {
       const last = lastByExam[exam.id];
       const scope = exam.rwOnly ? "Reading & Writing" : exam.mathOnly ? "Math only" : "Full test";
@@ -555,7 +547,7 @@ Apex.views = (function () {
       }).filter(Boolean);
       return `<article class="card test-card card-hover reveal" data-start="${exam.id}" role="button" tabindex="0">
         <div class="tc-top">
-          <div class="row gap-2 dex-badges">${exam.version ? `<span class="badge">Version ${esc(exam.version)}</span>` : ""}${regionTag(exam.region)}</div>
+          <div class="row gap-2 dex-badges">${exam.version ? `<span class="badge">Version ${esc(exam.version)}</span>` : ""}</div>
         </div>
         <div>
           <h3>${esc(exam.title)}</h3>
@@ -570,9 +562,6 @@ Apex.views = (function () {
       <div class="page-head reveal qb-headwrap">
         <div class="qb-topbar">
           <h1 class="qb-h1 qb-h1-brand">${icon("file-text", 'style="width:26px;height:26px;display:inline;vertical-align:-4px"')} Digital SAT</h1>
-          <div class="pill-seg lib-head-filter" data-region>
-            ${[["all", "All"], ["us", "US"], ["int", "Int'l"]].map(([v, l]) => `<button class="pill-opt${region === v ? " active" : ""}" data-v="${v}">${l}</button>`).join("")}
-          </div>
         </div>
       </div>
       <div data-cards></div>
@@ -584,10 +573,10 @@ Apex.views = (function () {
 
     const cardsEl = Apex.util.qs("[data-cards]", container);
     const renderCards = () => {
-      const list = digital.filter((e) => region === "all" || (region === "us" ? /^us/i.test(e.region || "") : /^int/i.test(e.region || "")));
+      const list = digital;
       const years = [...new Set(list.map((e) => e.year))].sort((a, b) => b - a);
       cardsEl.innerHTML = list.length ? years.map((y) => {
-        const ex = list.filter((e) => e.year === y).sort((a, b) => (b.monthNum || 0) - (a.monthNum || 0) || String(a.region).localeCompare(String(b.region)) || String(a.version).localeCompare(String(b.version)));
+        const ex = list.filter((e) => e.year === y).sort((a, b) => (b.monthNum || 0) - (a.monthNum || 0) || String(a.version).localeCompare(String(b.version)));
         return `<section class="reveal" style="margin-bottom:32px">
           <h2 class="h3" style="margin-bottom:14px">${y}</h2>
           <div class="grid grid-5">${ex.map(dexCard).join("")}</div>
@@ -595,7 +584,6 @@ Apex.views = (function () {
       }).join("") : `<div class="empty card card-pad"><div class="big-icon">${icon("file-text")}</div><h2 class="h3">No exams in this view</h2><p class="muted">Add exam files in <code>assets/data/exams/</code> (one <code>Apex.bank.register</code> per form) plus a script tag in app.html.</p></div>`;
       Apex.util.revealInit(cardsEl);
     };
-    Apex.ui.pillSeg(Apex.util.qs("[data-region]", container), (v) => { region = v; renderCards(); });
     renderCards();
     hydrate(container);
     Apex.app.setFocus(false);
@@ -43775,12 +43763,45 @@ Apex.views = (function () {
   async function vocab(container) {
     ensureCefr();
 
+    // Shared header: the SAT Vocab title plus the SAT Vocab / Vocabulary toggle.
+    const headHtml = (active) => `
+        <div class="page-head reveal qb-headwrap">
+          <div class="qb-topbar">
+            <h1 class="h1 lib-title">${icon("type", 'style="width:.8em;height:.8em;flex:none"')}<span>SAT Vocab</span></h1>
+            <div class="pill-seg" data-vocabseg>
+              ${[["sat", "SAT Vocab"], ["cefr", "Vocabulary"]].map(([v, l]) => `<button class="pill-opt${active === v ? " active" : ""}" data-v="${v}">${esc(l)}</button>`).join("")}
+            </div>
+          </div>
+        </div>`;
+    function wireSeg() {
+      const seg = Apex.util.qs("[data-vocabseg]", container);
+      if (seg) Apex.ui.pillSeg(seg, (v) => (v === "cefr" ? levels() : satList()));
+    }
+
+    // Main tab — the curated SAT word list: word, part of speech, meaning, example.
+    function satList() {
+      container.innerHTML = `
+      <div class="container">
+        ${headHtml("sat")}
+        <div class="grid grid-3 reveal">
+          ${VOCAB.map((v) => `
+            <div class="card card-pad sv-card">
+              <div class="sv-top"><h3 class="sv-word">${esc(v.w)}</h3><span class="badge sv-pos">${esc(v.p)}</span></div>
+              <p class="sv-def">${esc(v.d)}</p>
+              <p class="sv-ex">&ldquo;${esc(v.e)}&rdquo;</p>
+            </div>`).join("")}
+        </div>
+      </div>`;
+      wireSeg();
+      hydrate(container);
+      Apex.app.setFocus(false);
+    }
+
     function levels() {
       const by = wordsByLevel();
       container.innerHTML = `
       <div class="container">
-        <div class="page-head reveal"><h1 class="h1 lib-title">${icon("type", 'style="width:.8em;height:.8em;flex:none"')}<span>Vocabulary</span></h1>
-        </div>
+        ${headHtml("cefr")}
         <div class="grid grid-3 reveal">
           ${VOCAB_LEVELS.map(([lv, col, name]) => `
             <button class="card card-hover vocab-level" data-level="${lv}" style="--lc:${col}">
@@ -43791,6 +43812,7 @@ Apex.views = (function () {
         </div>
       </div>`;
       Apex.util.qsa("[data-level]", container).forEach((b) => b.addEventListener("click", () => deck(b.dataset.level)));
+      wireSeg();
       hydrate(container);
       Apex.app.setFocus(false);
     }
@@ -43852,7 +43874,7 @@ Apex.views = (function () {
       window.scrollTo({ top: 0 });
     }
 
-    levels();
+    satList();   // SAT Vocab is the main tab; the CEFR levels live behind the toggle
   }
 
   /* ============================================================ PRICING */
