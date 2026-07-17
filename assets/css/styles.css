@@ -1440,7 +1440,7 @@ mark.annot.ul-straight.has-note, mark.annot.ul-wavy.has-note { box-shadow: none;
 
 /* ===== comparison table — shared feature labels, each plan column its own window ===== */
 .ptable-wrap { margin-top: 24px; overflow-x: auto; padding: 6px 2px 4px; }
-.ptable { width: 100%; min-width: 720px; border-collapse: separate; border-spacing: 16px 0;
+.ptable { width: 100%; min-width: 860px; border-collapse: separate; border-spacing: 14px 0;
   filter: drop-shadow(0 1px 2px rgba(15,23,42,.05)) drop-shadow(0 6px 14px rgba(15,23,42,.07)); }
 .ptable th, .ptable td { padding: 14px 18px; }
 /* left label column — not a window */
@@ -1455,6 +1455,7 @@ mark.annot.ul-straight.has-note, mark.annot.ul-wavy.has-note { box-shadow: none;
 .ptable tfoot td.pt-cta { text-align: center; padding: 20px 18px; border-bottom: 1px solid var(--border);
   border-bottom-left-radius: var(--r-lg); border-bottom-right-radius: var(--r-lg); }
 /* per-plan header tint (opaque, deep) + accent edge + name colour */
+.pt-plan.pt-col-free  { background: #eef1f5; border-top-color: #64748b; }        .pt-col-free  .pt-pname { color: #475569; }
 .pt-plan.pt-col-pro   { background: #e0f3f1; border-top-color: #0b7d70; }        .pt-col-pro   .pt-pname { color: #0a6b60; }
 .pt-plan.pt-col-elite { background: #f9e2e3; border-top-color: var(--brand-600); } .pt-col-elite .pt-pname { color: var(--brand-700); }
 .pt-plan.pt-col-ultra { background: #eae9fc; border-top-color: #4038c9; }        .pt-col-ultra .pt-pname { color: #4038c9; }
@@ -1464,13 +1465,15 @@ mark.annot.ul-straight.has-note, mark.annot.ul-wavy.has-note { box-shadow: none;
 .ptable tbody td.pt-cell { text-align: center; }
 .pt-yes svg { width: 21px; height: 21px; color: var(--ok); stroke-width: 2.5; vertical-align: middle; }
 .pt-no svg  { width: 17px; height: 17px; color: var(--muted-2); opacity: .5; vertical-align: middle; }
+.pt-val { font-weight: 700; font-size: .9rem; color: var(--ink); }
 .ptable tfoot .btn { min-width: 130px; }
 /* dark theme: opaque deep tints + brighter names + darker lift */
 [data-theme="dark"] .ptable { filter: drop-shadow(0 2px 4px rgba(0,0,0,.4)) drop-shadow(0 8px 18px rgba(0,0,0,.45)); }
+[data-theme="dark"] .pt-plan.pt-col-free  { background: #1c2431; }  [data-theme="dark"] .pt-col-free  .pt-pname { color: #94a3b8; }
 [data-theme="dark"] .pt-plan.pt-col-pro   { background: #142f34; }  [data-theme="dark"] .pt-col-pro   .pt-pname { color: #2dd4bf; }
 [data-theme="dark"] .pt-plan.pt-col-elite { background: #301a24; }  [data-theme="dark"] .pt-col-elite .pt-pname { color: #ff6b78; }
 [data-theme="dark"] .pt-plan.pt-col-ultra { background: #1f2340; }  [data-theme="dark"] .pt-col-ultra .pt-pname { color: #8b83f0; }
-@media (max-width: 600px) { .ptable { min-width: 560px; border-spacing: 10px 0; } .ptable th, .ptable td { padding: 12px 12px; } }
+@media (max-width: 600px) { .ptable { min-width: 700px; border-spacing: 9px 0; } .ptable th, .ptable td { padding: 12px 10px; } }
 
 /* segmented theme control */
 .theme-seg { display: inline-flex; padding: 4px; background: var(--surface-2); border-radius: var(--pill); border: 1px solid var(--border); }

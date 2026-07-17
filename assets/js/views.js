@@ -43948,28 +43948,29 @@ Apex.views = (function () {
   /* ============================================================ PRICING */
   async function pricing(container) {
     const PLANS = [
+      { key: "free",  name: "Free",  price: "$0",     cta: "btn-outline" },
       { key: "pro",   name: "Pro",   price: "$4.99",  cta: "btn-outline" },
       { key: "elite", name: "Elite", price: "$9.99",  cta: "btn-primary", featured: true },
       { key: "ultra", name: "Ultra", price: "$14.99", cta: "btn-dark" },
     ];
-    // feature → inclusion per [Pro, Elite, Ultra]
+    // feature → cell per [Free, Pro, Elite, Ultra]. 1 = included, 0 = not, string = value.
     const FEATURES = [
-      ["Full-length practice tests",         [1, 1, 1]],
-      ["Question bank by skill",             [1, 1, 1]],
-      ["Instant scoring &amp; explanations", [1, 1, 1]],
-      ["Unlimited shuffled practice",        [1, 1, 1]],
-      ["Reading &amp; vocabulary drills",    [0, 1, 1]],
-      ["Detailed skill analytics",           [0, 1, 1]],
-      ["Cross-device cloud sync",            [0, 1, 1]],
-      ["Personalized study plan",            [0, 0, 1]],
-      ["Priority new question packs",        [0, 0, 1]],
-      ["Goal tracking to test day",          [0, 0, 1]],
+      ["Question Bank &mdash; full access", [1, 1, 1, 1]],
+      ["Progress data &amp; analytics",     [1, 1, 1, 1]],
+      ["Generate Mock (per month)",         ["3", "5", "10", "Unlimited"]],
+      ["Digital SAT &mdash; 2025 papers",   [0, 1, 1, 1]],
+      ["Digital SAT &mdash; 2026 papers",   [0, 0, 0, 1]],
+      ["SAT Vocab",                         [0, 0, 1, 1]],
+      ["AI Solve &mdash; Question Bank",    [0, 1, 1, 1]],
+      ["AI Solve &mdash; Digital SAT",      [0, 0, 1, 1]],
+      ["AI Solve &mdash; Generate Mock",    [0, 0, 0, 1]],
     ];
     const yes = icon("check"), no = icon("x");
+    const cellInner = (v) => v === 1 ? `<span class="pt-yes">${yes}</span>` : (v === 0 || v == null ? `<span class="pt-no">${no}</span>` : `<span class="pt-val">${v}</span>`);
     // comparison table: shared feature labels on the left, each plan column its own window
     const head = PLANS.map((p) => `<th class="pt-plan pt-col pt-col-${p.key}"><span class="pt-pname">${p.name}</span><span class="pt-price">${p.price}<small>/mo</small></span></th>`).join("");
-    const rows = FEATURES.map(([label, inc]) => `<tr><th scope="row" class="pt-feat">${label}</th>${inc.map((v, i) => `<td class="pt-cell pt-col pt-col-${PLANS[i].key} ${v ? "pt-yes" : "pt-no"}">${v ? yes : no}</td>`).join("")}</tr>`).join("");
-    const foot = PLANS.map((p) => `<td class="pt-cta pt-col pt-col-${p.key}"><a class="btn ${p.cta}" href="#/account">Get started</a></td>`).join("");
+    const rows = FEATURES.map(([label, inc]) => `<tr><th scope="row" class="pt-feat">${label}</th>${inc.map((v, i) => `<td class="pt-cell pt-col pt-col-${PLANS[i].key}">${cellInner(v)}</td>`).join("")}</tr>`).join("");
+    const foot = PLANS.map((p) => `<td class="pt-cta pt-col pt-col-${p.key}"><a class="btn ${p.cta}" href="#/account">${p.key === "free" ? "Start free" : "Get started"}</a></td>`).join("");
     container.innerHTML = `
     <div class="container">
       <div class="page-head text-center reveal" style="max-width:640px;margin-inline:auto;margin-bottom:26px">
