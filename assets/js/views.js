@@ -43778,20 +43778,35 @@ Apex.views = (function () {
       if (seg) Apex.ui.pillSeg(seg, (v) => (v === "cefr" ? levels() : satList()));
     }
 
-    // Main tab — the curated SAT word list: word, part of speech, meaning, example.
+    // Main tab — one column per word class, each opening its own flashcard deck.
+    const POS_DECKS = [
+      ["noun", "Noun", "#10b981", "rgba(16,185,129,.12)"],
+      ["verb", "Verb", "#d11d2b", "rgba(209,29,43,.12)"],
+      ["adjective", "Adjective", "#7c3aed", "rgba(124,58,237,.12)"],
+    ];
+    const wordsByPos = (pos) => VOCAB.filter((v) => v.p === pos);
+
     function satList() {
       container.innerHTML = `
       <div class="container">
         ${headHtml("sat")}
         <div class="grid grid-3 reveal">
-          ${VOCAB.map((v) => `
-            <div class="card card-pad sv-card">
-              <div class="sv-top"><h3 class="sv-word">${esc(v.w)}</h3><span class="badge sv-pos">${esc(v.p)}</span></div>
-              <p class="sv-def">${esc(v.d)}</p>
-              <p class="sv-ex">&ldquo;${esc(v.e)}&rdquo;</p>
-            </div>`).join("")}
+          ${POS_DECKS.map(([pos, name, c, bg]) => {
+            const ws = wordsByPos(pos);
+            return `<div class="card svd" style="--dc:${c};--dcb:${bg}">
+              <div class="svd-head">
+                <h3 class="svd-title">${name}</h3>
+                <div class="svd-count">${ws.length} ${ws.length === 1 ? "word" : "words"}</div>
+              </div>
+              <div class="svd-body">${ws.map((v) => `<span class="svd-chip">${esc(v.w)}</span>`).join("")}</div>
+              <div class="svd-foot">
+                <button class="btn btn-primary" data-pos="${pos}"${ws.length ? "" : " disabled"}>${icon("play")} Start Practice</button>
+              </div>
+            </div>`;
+          }).join("")}
         </div>
       </div>`;
+      Apex.util.qsa("[data-pos]", container).forEach((b) => b.addEventListener("click", () => satDeck(b.dataset.pos)));
       wireSeg();
       hydrate(container);
       Apex.app.setFocus(false);
@@ -43865,6 +43880,56 @@ Apex.views = (function () {
         };
         flashEl.addEventListener("click", () => { flipped = !flipped; flashEl.classList.toggle("flipped", flipped); if (flipped) loadBack(); });
         Apex.util.qs("[data-back]", container).addEventListener("click", levels);
+        Apex.util.qs("[data-prev]", container).addEventListener("click", () => { if (idx > 0) { idx--; flipped = false; render(); } });
+        Apex.util.qs("[data-next]", container).addEventListener("click", () => { if (idx < order.length - 1) { idx++; flipped = false; render(); } });
+        Apex.util.qs("[data-shuffle]", container).addEventListener("click", () => { order = shuffle(all.slice()); idx = 0; flipped = false; render(); });
+        hydrate(container);
+      }
+      render();
+      window.scrollTo({ top: 0 });
+    }
+
+    // Flashcards for one SAT word class. The definitions ship with the list, so unlike
+    // the CEFR deck there is nothing to look up — the back face is filled straight away.
+    function satDeck(pos) {
+      const meta = POS_DECKS.find((p) => p[0] === pos) || [];
+      const all = wordsByPos(pos);
+      if (!all.length) return satList();
+      const col = meta[2] || "var(--brand-600)";
+      let order = shuffle(all.slice()), idx = 0, flipped = false;
+
+      function render() {
+        const v = order[idx];
+        container.innerHTML = `
+        <div class="container" style="max-width:780px;margin-inline:auto">
+          <a class="nav-link" data-back style="display:inline-flex;cursor:pointer;margin-bottom:12px">${icon("chevron-left")} SAT Vocab</a>
+          <div class="page-head reveal" style="margin-bottom:22px;text-align:center">
+            <span class="badge" style="background:${col}1f;color:${col};border-color:${col}55">${esc(meta[1] || pos)}</span>
+            <h1 class="h1" style="margin-top:8px">Flashcards</h1>
+            <p class="lead">Tap the card to flip. ${idx + 1} of ${order.length}.</p>
+          </div>
+          <div class="flash" data-flash style="--lc:${col}">
+            <div class="flash-inner">
+              <div class="flash-face">
+                <div class="flash-word">${esc(v.w)}</div>
+                <div class="flash-hint">Tap to reveal the meaning</div>
+              </div>
+              <div class="flash-face flash-back">
+                <div class="flash-pos">${esc(v.p)}</div>
+                <div class="flash-def">${esc(v.d)}</div>
+                <div class="flash-ex">&ldquo;${esc(v.e)}&rdquo;</div>
+              </div>
+            </div>
+          </div>
+          <div class="row between" style="margin-top:24px">
+            <button class="btn btn-outline" data-prev ${idx === 0 ? "disabled" : ""}>${icon("chevron-left")} Prev</button>
+            <button class="btn btn-ghost" data-shuffle>${icon("shuffle")} Shuffle</button>
+            <button class="btn btn-primary" data-next ${idx === order.length - 1 ? "disabled" : ""}>Next ${icon("chevron-right")}</button>
+          </div>
+        </div>`;
+        const flashEl = Apex.util.qs("[data-flash]", container);
+        flashEl.addEventListener("click", () => { flipped = !flipped; flashEl.classList.toggle("flipped", flipped); });
+        Apex.util.qs("[data-back]", container).addEventListener("click", satList);
         Apex.util.qs("[data-prev]", container).addEventListener("click", () => { if (idx > 0) { idx--; flipped = false; render(); } });
         Apex.util.qs("[data-next]", container).addEventListener("click", () => { if (idx < order.length - 1) { idx++; flipped = false; render(); } });
         Apex.util.qs("[data-shuffle]", container).addEventListener("click", () => { order = shuffle(all.slice()); idx = 0; flipped = false; render(); });
