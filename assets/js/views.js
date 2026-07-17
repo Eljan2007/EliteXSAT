@@ -43945,9 +43945,9 @@ Apex.views = (function () {
   /* ============================================================ PRICING */
   async function pricing(container) {
     const PLANS = [
-      { key: "pro",   name: "Pro",   price: "$12", cta: "btn-outline" },
-      { key: "elite", name: "Elite", price: "$24", cta: "btn-primary", featured: true },
-      { key: "ultra", name: "Ultra", price: "$39", cta: "btn-dark" },
+      { key: "pro",   name: "Pro",   price: "$4.99",  cta: "btn-outline" },
+      { key: "elite", name: "Elite", price: "$9.99",  cta: "btn-primary", featured: true },
+      { key: "ultra", name: "Ultra", price: "$14.99", cta: "btn-dark" },
     ];
     // feature → inclusion per [Pro, Elite, Ultra]
     const FEATURES = [
