@@ -43295,7 +43295,10 @@ Apex.views = (function () {
         body: `<div class="small" style="line-height:1.75">Read each question and choose the best answer. You can <b>mark a question for review</b> (the bookmark), <b>cross out answer choices</b> you've eliminated (the <span style="text-decoration:line-through">ABC</span> tool), and <b>annotate</b> the passage. The timer counts <b>up</b> — there's no time limit in the Question Bank, so you can just see how long each question takes.</div>`,
         actions: `<button class="btn btn-primary" data-close>Got it</button>` });
       if (t.closest("[data-calc]")) return Apex.calc.toggle(root);   // the calc module keeps the button's "on" state in sync
-      if (t.closest("[data-report]")) return Apex.ui.reportModal();
+      if (t.closest("[data-report]")) {
+        const cq = questions[st.i];
+        return Apex.ui.reportModal(`Question Bank · ${title}${cq && cq.id ? ` · Q${st.i + 1} (${cq.id})` : ""}`);
+      }
       if (t.closest("[data-more]")) {
         Apex.util.qs(".qr-more-menu", root)?.remove();
         const r = t.closest("[data-more]").getBoundingClientRect();
@@ -44000,15 +44003,24 @@ Apex.views = (function () {
     let list = [];
     try { list = await Apex.store.listReports(); } catch (e) { list = []; }
     const open = list.filter((r) => r.status !== "resolved").length;
-    const row = (r) => `<div class="card card-pad reveal" style="margin-bottom:12px">
+    const row = (r) => {
+      // context is "<where it came from> · <url>" — split so the origin reads at a glance.
+      const ctx = (r.context || "").trim();
+      const mm = ctx.match(/^([\s\S]*?)\s*·\s*(https?:\/\/\S+)\s*$/);
+      const origin = (mm ? mm[1] : ctx).trim();
+      const url = mm ? mm[2] : "";
+      const pin = `<span style="display:inline-flex;align-items:center;gap:6px;margin-top:9px;font-size:.8rem;font-weight:600;color:var(--brand-600);background:rgba(209,29,43,.08);border:1px solid rgba(209,29,43,.22);border-radius:999px;padding:4px 11px;max-width:100%">${icon("compass", 'style="width:14px;height:14px;flex:none"')}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(origin)}</span></span>`;
+      return `<div class="card card-pad reveal" style="margin-bottom:12px">
       <div class="row between" style="align-items:flex-start;gap:14px">
         <div style="flex:1;min-width:0">
           <div style="white-space:pre-wrap;line-height:1.6${r.status === "resolved" ? ";opacity:.55" : ""}">${esc(r.message)}</div>
-          <div class="tiny muted" style="margin-top:8px">${esc(r.email || "anonymous")} · ${esc(fmtDate(new Date(r.created_at).getTime()))}${r.context ? ` · <span style="opacity:.75">${esc(r.context)}</span>` : ""}</div>
+          ${origin ? `<div>${pin}</div>` : ""}
+          <div class="tiny muted" style="margin-top:8px">${esc(r.email || "anonymous")} · ${esc(fmtDate(new Date(r.created_at).getTime()))}${url ? ` · <a href="${esc(url)}" target="_blank" rel="noopener" style="color:inherit;opacity:.7">${esc(url)}</a>` : ""}</div>
         </div>
         <button class="btn btn-sm ${r.status === "resolved" ? "btn-outline" : "btn-primary"}" data-resolve="${esc(String(r.id))}" style="flex:none">${r.status === "resolved" ? icon("check") + " Resolved" : "Mark resolved"}</button>
       </div>
     </div>`;
+    };
     const localNote = Apex.store.mode() === "supabase" ? "" : ` · <b>Local mode</b> — only reports from this browser appear here; turn on Supabase to collect every student's reports.`;
     container.innerHTML = `<div class="container" style="max-width:880px">
       <div class="page-head reveal"><span class="eyebrow">${icon("flag", 'style="width:14px;height:14px;display:inline;vertical-align:-2px"')} Admin</span>

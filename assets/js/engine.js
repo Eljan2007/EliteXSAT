@@ -555,7 +555,7 @@ Apex.engine = (function () {
       const mk = t.closest("mark.annot"); if (mk && state.annotate) { e.stopPropagation(); return openNotePopover(mk); }
       if (t.closest("[data-calc]")) return Apex.calc.toggle(root);   // the calc module keeps the button's "on" state in sync
       if (t.closest("[data-bg]")) { Apex.theme.toggle(); return; }   // one-click instant White↔Dark (no popup)
-      if (t.closest("[data-report]")) return Apex.ui.reportModal();
+      if (t.closest("[data-report]")) return Apex.ui.reportModal(reportContext());
       if (t.closest("[data-more]")) return openMoreMenu(t.closest("[data-more]"));
       const pane = t.closest("[data-pane]");
       if (pane) { const eb = qs(".engine-body.two-pane", root); if (eb) { state.splitPct = pane.dataset.pane === "left" ? (state.splitPct > 55 ? 50 : 60) : (state.splitPct < 45 ? 50 : 40); eb.style.setProperty("--lf", state.splitPct); eb.style.setProperty("--rf", 100 - state.splitPct); } return; }
@@ -622,6 +622,18 @@ Apex.engine = (function () {
     Apex.ui.modal({ title: "Directions", size: "lg",
       body: `<div class="small" style="line-height:1.75">Answer every question in this module. You can <b>mark a question for review</b> (the bookmark), <b>cross out answer choices</b> you've ruled out (the <span style="text-decoration:line-through">ABC</span> tool), and <b>annotate</b> the passage by turning on Annotate and selecting text. Use the navigator at the bottom to move between questions. The timer at the top counts <b>down</b> — when it reaches 0:00 the module ends automatically.</div>`,
       actions: `<button class="btn btn-primary" data-close>Got it</button>` });
+  }
+  // Human-readable location string sent with a "Report a problem" so the admin can see
+  // exactly where it came from: which exam, which section, and which question.
+  function reportContext() {
+    try {
+      const secName = (meta[section().id] && meta[section().id].name) || section().id;
+      if (state.phase === "test") {
+        const q = question();
+        return `Digital SAT · ${state.exam.title} · ${secName} · Q${state.questionIndex + 1}${q && q.id ? ` (${q.id})` : ""}`;
+      }
+      return `Digital SAT · ${state.exam.title} · ${secName} · ${state.phase}`;
+    } catch (e) { return `Digital SAT · ${(state && state.exam && state.exam.title) || "test"}`; }
   }
   function openMoreMenu(btn) {
     qs(".qr-more-menu", refs.root)?.remove();
