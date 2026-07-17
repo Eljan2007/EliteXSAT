@@ -28,7 +28,7 @@ Apex.app = (function () {
     { name: "bank",    route: "#/bank",    label: "Question Bank",     icon: "layers",    group: 1 },
     { name: "shuffle", route: "#/shuffle", label: "Generate Mock", icon: "shuffle",   group: 1 },
     { name: "data",    route: "#/data",    label: "Your Data",         icon: "bar-chart", group: 1 },
-    { name: "reading", route: "#/reading", label: "Reading Article",   icon: "book-open", group: 2 },
+    { name: "reading", route: "#/reading", label: "Reading Book",   icon: "book-open", group: 2 },
     { name: "vocab",   route: "#/vocab",   label: "Vocabulary",        icon: "type",      group: 2 },
   ];
 

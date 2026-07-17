@@ -75,6 +75,13 @@ Apex.store = (function () {
         }
         S.remove("session"); _user = null; emit();
       },
+      // Wipe the user's results but keep the account + session.
+      async resetData() {
+        const uid = _user ? _user.id : null;
+        if (!uid) return;
+        S.remove(`attempts.${uid}`);
+        S.remove(`progress.${uid}`);
+      },
       _key: (base) => `${base}.${_user ? _user.id : "anon"}`,
       async listAttempts() {
         return (S.get(this._key("attempts"), [])).sort((a, b) => b.finishedAt - a.finishedAt);
@@ -217,6 +224,16 @@ Apex.store = (function () {
         try { await sb.auth.signOut(); } catch (e) {}
         _user = null; _recovery = false; emit();
       },
+      // Wipe the user's results but keep the account + session. RLS lets a user
+      // delete their own rows, so no server-side function is needed here.
+      async resetData() {
+        const uid = _user ? _user.id : null;
+        if (!uid) return;
+        const a = await sb.from("attempts").delete().eq("user_id", uid);
+        if (a && a.error) throw new Error(a.error.message);
+        const p = await sb.from("progress").delete().eq("user_id", uid);
+        if (p && p.error) throw new Error(p.error.message);
+      },
       async listAttempts() {
         const { data, error } = await sb.from("attempts").select("payload").eq("user_id", _user.id).order("created_at", { ascending: false });
         if (error) return [];
@@ -307,6 +324,20 @@ Apex.store = (function () {
     return { attempts, completed, count: completed.length, best, avg, latest, totalMinutes, domains };
   }
 
+  /* Wipe every practice result for the signed-in user but keep the account: exam
+     attempts + any in-progress test (via the driver), plus the Question Bank's
+     per-question tallies, flags and time, which the bank runner writes straight to
+     localStorage under the same uid the dashboard reads. */
+  async function resetData() {
+    await driver.resetData();
+    const uid = _user ? (_user.id || _user.email) : null;
+    if (uid) {
+      ["exsat.bank.progress.", "exsat.bank.flags.", "exsat.bank.time."].forEach((k) => {
+        try { localStorage.removeItem(k + uid); } catch (e) {}
+      });
+    }
+  }
+
   return {
     init,
     mode: () => (driver === remote ? "supabase" : "local"),
@@ -322,6 +353,7 @@ Apex.store = (function () {
     endRecovery: () => { _recovery = false; },
     updateProfile: (p) => driver.updateProfile(p),
     deleteAccount: () => driver.deleteAccount(),
+    resetData,
     listAttempts: () => driver.listAttempts(),
     getAttempt: (id) => driver.getAttempt(id),
     saveAttempt: (a) => driver.saveAttempt(a),
