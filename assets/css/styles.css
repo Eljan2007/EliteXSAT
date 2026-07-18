@@ -1130,7 +1130,8 @@ body.has-sidebar .app-main .container { --container: 1560px; margin-inline: 0; }
 /* SAT Vocab flashcard back — part of speech at the top, meaning up high,
    synonyms + antonyms split across the bottom. */
 .sv-back { justify-content: flex-start; align-items: stretch; text-align: center; padding: 26px 30px 24px; }
-.svb-pos { font-size: .85rem; font-style: italic; color: var(--muted-2); }
+.svb-pos { align-self: center; display: inline-block; font-size: .74rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: 4px 13px; border-radius: 999px; }
 .svb-main { margin-top: 30px; }
 .svb-def { font-size: 1.4rem; line-height: 1.4; color: var(--ink); font-weight: 500; text-wrap: balance; }
 .svb-ex { margin-top: 12px; font-size: .92rem; font-style: italic; color: var(--muted); line-height: 1.5; }

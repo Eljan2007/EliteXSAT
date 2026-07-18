@@ -43907,8 +43907,7 @@ Apex.views = (function () {
         <div class="container" style="max-width:780px;margin-inline:auto">
           <a class="nav-link" data-back style="display:inline-flex;cursor:pointer;margin-bottom:12px">${icon("chevron-left")} SAT Vocab</a>
           <div class="page-head reveal" style="margin-bottom:22px;text-align:center">
-            <span class="badge" style="background:${col}1f;color:${col};border-color:${col}55">${esc(meta[1] || pos)}</span>
-            <h1 class="h1" style="margin-top:8px">Flashcards</h1>
+            <h1 class="h1">Flashcards</h1>
             <p class="lead">Tap the card to flip. ${idx + 1} of ${order.length}.</p>
           </div>
           <div class="flash" data-flash style="--lc:${col}">
@@ -43918,7 +43917,7 @@ Apex.views = (function () {
                 <div class="flash-hint">Tap to reveal the meaning</div>
               </div>
               <div class="flash-face flash-back sv-back">
-                <div class="svb-pos">${esc(v.p)}</div>
+                <span class="svb-pos" style="background:${col}1f;color:${col};border:1px solid ${col}55">${esc(v.p)}</span>
                 <div class="svb-main">
                   <div class="svb-def">${esc(v.d)}</div>
                   <div class="svb-ex">&ldquo;${esc(v.e)}&rdquo;</div>
