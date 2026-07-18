@@ -43699,26 +43699,26 @@ Apex.views = (function () {
 
   /* ========================================================= VOCABULARY */
   const VOCAB = [
-    { w: "Ameliorate", p: "verb", d: "To make something bad or unsatisfactory better.", e: "New irrigation helped ameliorate the effects of the drought." },
-    { w: "Cogent", p: "adjective", d: "Clear, logical, and convincing.", e: "She made a cogent argument for extending the deadline." },
-    { w: "Ephemeral", p: "adjective", d: "Lasting for a very short time.", e: "The beauty of the cherry blossoms is ephemeral." },
-    { w: "Gregarious", p: "adjective", d: "Fond of company; sociable.", e: "His gregarious nature made him the center of every gathering." },
-    { w: "Pragmatic", p: "adjective", d: "Dealing with things sensibly and realistically.", e: "They took a pragmatic approach to the budget cuts." },
-    { w: "Tenuous", p: "adjective", d: "Very weak or slight.", e: "The evidence linking the two events was tenuous at best." },
-    { w: "Ubiquitous", p: "adjective", d: "Present, appearing, or found everywhere.", e: "Smartphones have become ubiquitous in daily life." },
-    { w: "Candor", p: "noun", d: "The quality of being open and honest.", e: "She answered the difficult questions with surprising candor." },
-    { w: "Diligent", p: "adjective", d: "Showing careful and persistent effort.", e: "Diligent study paid off when she aced the exam." },
-    { w: "Prudent", p: "adjective", d: "Acting with care and thought for the future.", e: "It was prudent to save part of every paycheck." },
-    { w: "Mitigate", p: "verb", d: "To make less severe or painful.", e: "Planting trees can mitigate urban heat." },
-    { w: "Nuance", p: "noun", d: "A subtle difference in meaning or expression.", e: "A good translator captures every nuance of the original." },
-    { w: "Resilient", p: "adjective", d: "Able to recover quickly from difficulties.", e: "The resilient community rebuilt after the storm." },
-    { w: "Scrutinize", p: "verb", d: "To examine closely and critically.", e: "Editors scrutinize each sentence for accuracy." },
-    { w: "Superfluous", p: "adjective", d: "Unnecessary, more than is needed.", e: "He cut the superfluous details from his essay." },
-    { w: "Astute", p: "adjective", d: "Having sharp judgment; perceptive.", e: "An astute investor, she spotted the trend early." },
-    { w: "Benevolent", p: "adjective", d: "Well meaning and kindly.", e: "The benevolent donor funded the new library." },
-    { w: "Conspicuous", p: "adjective", d: "Standing out so as to be clearly visible.", e: "Her conspicuous talent earned immediate attention." },
-    { w: "Inevitable", p: "adjective", d: "Certain to happen; unavoidable.", e: "With practice, improvement was inevitable." },
-    { w: "Meticulous", p: "adjective", d: "Showing great attention to detail.", e: "His meticulous notes made review easy." },
+    { w: "Ameliorate", p: "verb", d: "To make something bad or unsatisfactory better.", e: "New irrigation helped ameliorate the effects of the drought.", syn: ["improve", "better", "enhance"], ant: ["worsen", "aggravate", "impair"] },
+    { w: "Cogent", p: "adjective", d: "Clear, logical, and convincing.", e: "She made a cogent argument for extending the deadline.", syn: ["convincing", "compelling", "persuasive"], ant: ["unconvincing", "weak", "vague"] },
+    { w: "Ephemeral", p: "adjective", d: "Lasting for a very short time.", e: "The beauty of the cherry blossoms is ephemeral.", syn: ["fleeting", "transient", "momentary"], ant: ["permanent", "lasting", "enduring"] },
+    { w: "Gregarious", p: "adjective", d: "Fond of company; sociable.", e: "His gregarious nature made him the center of every gathering.", syn: ["sociable", "outgoing", "convivial"], ant: ["reclusive", "antisocial", "solitary"] },
+    { w: "Pragmatic", p: "adjective", d: "Dealing with things sensibly and realistically.", e: "They took a pragmatic approach to the budget cuts.", syn: ["practical", "realistic", "sensible"], ant: ["idealistic", "impractical", "unrealistic"] },
+    { w: "Tenuous", p: "adjective", d: "Very weak or slight.", e: "The evidence linking the two events was tenuous at best.", syn: ["flimsy", "weak", "slight"], ant: ["strong", "solid", "substantial"] },
+    { w: "Ubiquitous", p: "adjective", d: "Present, appearing, or found everywhere.", e: "Smartphones have become ubiquitous in daily life.", syn: ["omnipresent", "universal", "pervasive"], ant: ["rare", "scarce", "uncommon"] },
+    { w: "Candor", p: "noun", d: "The quality of being open and honest.", e: "She answered the difficult questions with surprising candor.", syn: ["frankness", "honesty", "openness"], ant: ["deceit", "secrecy", "evasion"] },
+    { w: "Diligent", p: "adjective", d: "Showing careful and persistent effort.", e: "Diligent study paid off when she aced the exam.", syn: ["hardworking", "industrious", "assiduous"], ant: ["lazy", "negligent", "careless"] },
+    { w: "Prudent", p: "adjective", d: "Acting with care and thought for the future.", e: "It was prudent to save part of every paycheck.", syn: ["cautious", "sensible", "judicious"], ant: ["reckless", "rash", "careless"] },
+    { w: "Mitigate", p: "verb", d: "To make less severe or painful.", e: "Planting trees can mitigate urban heat.", syn: ["alleviate", "lessen", "ease"], ant: ["aggravate", "intensify", "worsen"] },
+    { w: "Nuance", p: "noun", d: "A subtle difference in meaning or expression.", e: "A good translator captures every nuance of the original.", syn: ["subtlety", "shade", "distinction"], ant: ["obviousness", "bluntness", "generalization"] },
+    { w: "Resilient", p: "adjective", d: "Able to recover quickly from difficulties.", e: "The resilient community rebuilt after the storm.", syn: ["tough", "hardy", "adaptable"], ant: ["fragile", "brittle", "vulnerable"] },
+    { w: "Scrutinize", p: "verb", d: "To examine closely and critically.", e: "Editors scrutinize each sentence for accuracy.", syn: ["examine", "inspect", "analyze"], ant: ["ignore", "overlook", "skim"] },
+    { w: "Superfluous", p: "adjective", d: "Unnecessary, more than is needed.", e: "He cut the superfluous details from his essay.", syn: ["unnecessary", "excess", "redundant"], ant: ["essential", "necessary", "vital"] },
+    { w: "Astute", p: "adjective", d: "Having sharp judgment; perceptive.", e: "An astute investor, she spotted the trend early.", syn: ["shrewd", "perceptive", "sharp"], ant: ["obtuse", "naive", "dull"] },
+    { w: "Benevolent", p: "adjective", d: "Well meaning and kindly.", e: "The benevolent donor funded the new library.", syn: ["kind", "generous", "charitable"], ant: ["malevolent", "cruel", "unkind"] },
+    { w: "Conspicuous", p: "adjective", d: "Standing out so as to be clearly visible.", e: "Her conspicuous talent earned immediate attention.", syn: ["obvious", "prominent", "noticeable"], ant: ["inconspicuous", "hidden", "subtle"] },
+    { w: "Inevitable", p: "adjective", d: "Certain to happen; unavoidable.", e: "With practice, improvement was inevitable.", syn: ["unavoidable", "inescapable", "certain"], ant: ["avoidable", "uncertain", "preventable"] },
+    { w: "Meticulous", p: "adjective", d: "Showing great attention to detail.", e: "His meticulous notes made review easy.", syn: ["thorough", "careful", "precise"], ant: ["careless", "sloppy", "negligent"] },
   ];
   // --- Vocabulary by CEFR level (words from the Oxford list; defs fetched live) ---
   const VOCAB_LEVELS = [
@@ -43917,10 +43917,16 @@ Apex.views = (function () {
                 <div class="flash-word">${esc(v.w)}</div>
                 <div class="flash-hint">Tap to reveal the meaning</div>
               </div>
-              <div class="flash-face flash-back">
-                <div class="flash-pos">${esc(v.p)}</div>
-                <div class="flash-def">${esc(v.d)}</div>
-                <div class="flash-ex">&ldquo;${esc(v.e)}&rdquo;</div>
+              <div class="flash-face flash-back sv-back">
+                <div class="svb-pos">${esc(v.p)}</div>
+                <div class="svb-main">
+                  <div class="svb-def">${esc(v.d)}</div>
+                  <div class="svb-ex">&ldquo;${esc(v.e)}&rdquo;</div>
+                </div>
+                <div class="svb-sa">
+                  <div class="svb-col svb-syn"><div class="svb-lab">Synonyms</div><div class="svb-words">${(v.syn || []).map((s) => `<span class="svb-chip">${esc(s)}</span>`).join("") || '<span class="svb-none">—</span>'}</div></div>
+                  <div class="svb-col svb-ant"><div class="svb-lab">Antonyms</div><div class="svb-words">${(v.ant || []).map((s) => `<span class="svb-chip">${esc(s)}</span>`).join("") || '<span class="svb-none">—</span>'}</div></div>
+                </div>
               </div>
             </div>
           </div>
