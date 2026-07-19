@@ -24,7 +24,7 @@
       answer: `A`,
       explanation: `In contrast to elaborate ornamentation, Gray's clean, minimal style is <b>austere</b>, A. (Editorial item.)` },
     { id: `jib-rw-m1-3`, domain: `Craft and Structure`, skill: `Words in Context`, difficulty: `medium`, type: `mcq`,
-      passage: `The following text is adapted from Virginia Woolf's 1919 novel <i>Night and Day</i>.<br><br>As the granddaughter of a celebrated poet, Katharine was expected to share her family's literary gifts. Yet when visitors arrived hoping to draw her into conversation about verse, the drawbacks of her position made themselves very <u>manifest</u>.`,
+      passage: `The following text is adapted from Virginia Woolf's 1919 novel <i>Night and Day</i>. Katharine is the granddaughter of a celebrated poet.<br><br>[Katharine's] descent from [a celebrated poet] was no surprise to her, but matter for satisfaction, until, as the years wore on, certain drawbacks made themselves very <u>manifest</u>. Perhaps it is a little depressing to inherit not lands but an example of intellectual virtue; perhaps the conclusiveness of a great ancestor is a little discouraging to those who run the risk of comparison with him.`,
       prompt: `As used in the text, the word &ldquo;manifest&rdquo; most nearly means`,
       options: [{ id: `A`, text: `Possible` }, { id: `B`, text: `Evident` }, { id: `C`, text: `Complex` }, { id: `D`, text: `Particular` }],
       answer: `B`,
